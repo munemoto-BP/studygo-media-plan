@@ -1,0 +1,1204 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StudyGO メディア運用計画書 2026-2027</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --primary: #2563eb;
+    --primary-light: #dbeafe;
+    --secondary: #059669;
+    --secondary-light: #d1fae5;
+    --accent: #d97706;
+    --accent-light: #fef3c7;
+    --danger: #dc2626;
+    --danger-light: #fee2e2;
+    --gray-50: #f9fafb;
+    --gray-100: #f3f4f6;
+    --gray-200: #e5e7eb;
+    --gray-300: #d1d5db;
+    --gray-500: #6b7280;
+    --gray-700: #374151;
+    --gray-900: #111827;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Segoe UI', 'Hiragino Kaku Gothic ProN', 'Yu Gothic', sans-serif;
+    background: var(--gray-100);
+    color: var(--gray-900);
+    line-height: 1.7;
+  }
+
+  .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+
+  /* ヘッダー */
+  .header {
+    background: linear-gradient(135deg, #1e40af, #3b82f6);
+    color: white;
+    padding: 48px 40px;
+    border-radius: 16px;
+    margin-bottom: 32px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -10%;
+    width: 400px;
+    height: 400px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 50%;
+  }
+  .header h1 { font-size: 32px; font-weight: 800; margin-bottom: 8px; }
+  .header .subtitle { font-size: 18px; opacity: 0.9; }
+  .header .meta { margin-top: 16px; font-size: 14px; opacity: 0.7; }
+
+  /* セクション */
+  .section {
+    background: white;
+    border-radius: 12px;
+    padding: 32px;
+    margin-bottom: 24px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+  .section-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--gray-900);
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 3px solid var(--primary);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-title .icon {
+    width: 36px;
+    height: 36px;
+    background: var(--primary);
+    color: white;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  /* KPIカード */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .kpi-card {
+    background: var(--gray-50);
+    border-radius: 12px;
+    padding: 24px;
+    text-align: center;
+    border: 1px solid var(--gray-200);
+  }
+  .kpi-card.highlight { background: var(--primary-light); border-color: var(--primary); }
+  .kpi-card .label { font-size: 13px; color: var(--gray-500); margin-bottom: 8px; font-weight: 500; }
+  .kpi-card .value { font-size: 36px; font-weight: 800; color: var(--gray-900); }
+  .kpi-card.highlight .value { color: var(--primary); }
+  .kpi-card .unit { font-size: 14px; color: var(--gray-500); margin-top: 4px; }
+
+  /* チャート */
+  .chart-container {
+    position: relative;
+    width: 100%;
+    max-height: 350px;
+    margin: 24px 0;
+  }
+  .chart-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  @media (max-width: 768px) {
+    .chart-row { grid-template-columns: 1fr; }
+  }
+  .chart-box {
+    background: var(--gray-50);
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid var(--gray-200);
+  }
+  .chart-box h4 {
+    font-size: 14px;
+    color: var(--gray-700);
+    margin-bottom: 16px;
+    font-weight: 600;
+  }
+
+  /* テーブル */
+  .table-wrap { overflow-x: auto; margin: 16px 0; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  thead th {
+    background: var(--gray-900);
+    color: white;
+    padding: 12px 16px;
+    text-align: left;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  thead th:first-child { border-radius: 8px 0 0 0; }
+  thead th:last-child { border-radius: 0 8px 0 0; }
+  tbody td {
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--gray-200);
+  }
+  tbody tr:hover { background: var(--gray-50); }
+  tbody tr:last-child td { border-bottom: none; }
+  .num { text-align: right; font-variant-numeric: tabular-nums; }
+  .rank { font-weight: 700; color: var(--primary); width: 40px; text-align: center; }
+
+  /* バッジ */
+  .badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .badge-space { background: #dbeafe; color: #1e40af; }
+  .badge-method { background: #d1fae5; color: #065f46; }
+  .badge-license { background: #fef3c7; color: #92400e; }
+  .badge-goods { background: #fce7f3; color: #9d174d; }
+  .badge-interview { background: #e0e7ff; color: #3730a3; }
+  .badge-recommended { background: #f3e8ff; color: #6b21a8; }
+
+  /* 星評価 */
+  .stars { color: #f59e0b; letter-spacing: 2px; }
+  .stars-dim { color: var(--gray-300); }
+
+  /* 月別カード */
+  .month-card {
+    border: 1px solid var(--gray-200);
+    border-radius: 12px;
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+  .month-header {
+    padding: 16px 24px;
+    font-weight: 700;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .month-header .month-label { display: flex; align-items: center; gap: 10px; }
+  .month-header .month-num {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; font-weight: 800; color: white;
+  }
+  .month-header .season-tag {
+    font-size: 12px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-weight: 500;
+  }
+  /* 春 */
+  .spring .month-header { background: #fef3c7; }
+  .spring .month-num { background: #f59e0b; }
+  .spring .season-tag { background: #fde68a; color: #92400e; }
+  /* 夏 */
+  .summer .month-header { background: #dbeafe; }
+  .summer .month-num { background: #2563eb; }
+  .summer .season-tag { background: #bfdbfe; color: #1e40af; }
+  /* 秋 */
+  .autumn .month-header { background: #ffedd5; }
+  .autumn .month-num { background: #ea580c; }
+  .autumn .season-tag { background: #fed7aa; color: #9a3412; }
+  /* 冬 */
+  .winter .month-header { background: #e0e7ff; }
+  .winter .month-num { background: #4f46e5; }
+  .winter .season-tag { background: #c7d2fe; color: #3730a3; }
+
+  .month-body { padding: 0; }
+  .month-body table { margin: 0; }
+  .month-body thead th {
+    background: var(--gray-700);
+    font-size: 12px;
+    padding: 8px 16px;
+    border-radius: 0;
+  }
+  .month-body tbody td { font-size: 13px; padding: 10px 16px; }
+  .month-note {
+    padding: 12px 24px;
+    background: var(--gray-50);
+    font-size: 13px;
+    color: var(--gray-500);
+    border-top: 1px solid var(--gray-200);
+  }
+  .month-note strong { color: var(--gray-700); }
+
+  /* インサイトボックス */
+  .insight-box {
+    background: var(--primary-light);
+    border-left: 4px solid var(--primary);
+    padding: 16px 20px;
+    border-radius: 0 8px 8px 0;
+    margin: 16px 0;
+    font-size: 14px;
+  }
+  .insight-box.success {
+    background: var(--secondary-light);
+    border-left-color: var(--secondary);
+  }
+  .insight-box.warning {
+    background: var(--accent-light);
+    border-left-color: var(--accent);
+  }
+  .insight-box.danger {
+    background: var(--danger-light);
+    border-left-color: var(--danger);
+  }
+  .insight-box strong { display: block; margin-bottom: 4px; }
+
+  /* 配分バー */
+  .alloc-bar {
+    display: flex;
+    height: 36px;
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 16px 0;
+    font-size: 13px;
+    font-weight: 600;
+    color: white;
+  }
+  .alloc-bar div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+  }
+  .alloc-space { background: #2563eb; }
+  .alloc-method { background: #059669; }
+  .alloc-license { background: #d97706; }
+  .alloc-goods { background: #db2777; }
+
+  /* カバー済みタグ */
+  .tag-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 12px 0;
+  }
+  .tag {
+    background: var(--gray-100);
+    border: 1px solid var(--gray-300);
+    padding: 4px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    color: var(--gray-700);
+  }
+  .tag.covered { background: #dcfce7; border-color: #86efac; color: #166534; }
+  .tag.uncovered { background: #fef3c7; border-color: #fcd34d; color: #92400e; }
+
+  /* フロー図 */
+  .flow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin: 20px 0;
+    flex-wrap: wrap;
+  }
+  .flow-step {
+    background: white;
+    border: 2px solid var(--primary);
+    border-radius: 10px;
+    padding: 12px 20px;
+    text-align: center;
+    font-size: 13px;
+    min-width: 160px;
+  }
+  .flow-step .step-label {
+    font-size: 11px;
+    color: var(--primary);
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .flow-step .step-kw {
+    font-size: 12px;
+    color: var(--gray-500);
+    margin-top: 4px;
+  }
+  .flow-arrow { color: var(--primary); font-size: 24px; font-weight: 700; }
+  .flow-step.cv {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+  }
+  .flow-step.cv .step-label { color: rgba(255,255,255,0.8); }
+  .flow-step.cv .step-kw { color: rgba(255,255,255,0.7); }
+
+  /* フッター */
+  .footer {
+    text-align: center;
+    padding: 24px;
+    color: var(--gray-500);
+    font-size: 13px;
+  }
+
+  /* 年間カレンダーヒートマップ */
+  .heatmap-row {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 4px;
+    margin: 16px 0;
+  }
+  .heatmap-cell {
+    padding: 10px 6px;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .heatmap-cell .hm-month { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+
+  @media print {
+    body { background: white; }
+    .container { max-width: 100%; }
+    .section { break-inside: avoid; box-shadow: none; border: 1px solid #ddd; }
+    .month-card { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<!-- ========== ヘッダー ========== -->
+<div class="header">
+  <h1>StudyGO メディア運用計画書</h1>
+  <div class="subtitle">2026年4月 〜 2027年3月（年間48本 / 月4本ペース）</div>
+  <div class="meta">作成日: 2026年3月6日 ｜ 対象サイト: studygo.jp/magazine/ ｜ データソース: GA4（過去12ヶ月）</div>
+</div>
+
+<!-- ========== 1. トラフィック概況 ========== -->
+<div class="section">
+  <div class="section-title">
+    <div class="icon">1</div>
+    現状分析：トラフィック概況
+  </div>
+
+  <div class="kpi-grid">
+    <div class="kpi-card highlight">
+      <div class="label">年間総セッション数</div>
+      <div class="value">264,606</div>
+      <div class="unit">過去12ヶ月合計</div>
+    </div>
+    <div class="kpi-card">
+      <div class="label">オーガニック検索比率</div>
+      <div class="value" style="color:#059669;">96.3%</div>
+      <div class="unit">254,719 セッション</div>
+    </div>
+    <div class="kpi-card">
+      <div class="label">月間ピーク（12月）</div>
+      <div class="value" style="color:#d97706;">32,725</div>
+      <div class="unit">セッション / 月</div>
+    </div>
+    <div class="kpi-card">
+      <div class="label">公開済み記事数</div>
+      <div class="value">172</div>
+      <div class="unit">全カテゴリ合計</div>
+    </div>
+  </div>
+
+  <div class="insight-box">
+    <strong>Key Insight</strong>
+    流入の96%がオーガニック検索。SEO記事の質と量がそのまま事業成長に直結する構造。広告やSNSへの依存度が極めて低く、検索エンジン最適化への投資対効果が高い。
+  </div>
+
+  <div class="chart-container">
+    <canvas id="monthlyChart"></canvas>
+  </div>
+</div>
+
+<!-- ========== 2. カテゴリ別パフォーマンス ========== -->
+<div class="section">
+  <div class="section-title">
+    <div class="icon">2</div>
+    カテゴリ別パフォーマンス分析
+  </div>
+
+  <div class="chart-row">
+    <div class="chart-box">
+      <h4>カテゴリ別セッション構成比</h4>
+      <canvas id="categoryPieChart"></canvas>
+    </div>
+    <div class="chart-box">
+      <h4>1記事あたりの年間セッション数</h4>
+      <canvas id="categoryEffChart"></canvas>
+    </div>
+  </div>
+
+  <div class="table-wrap" style="margin-top:24px;">
+    <table>
+      <thead>
+        <tr>
+          <th>カテゴリ</th>
+          <th class="num">セッション</th>
+          <th class="num">記事数</th>
+          <th class="num">SS/記事</th>
+          <th>効率評価</th>
+          <th>所見</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="badge badge-space">space</span> 地域別勉強場所</td>
+          <td class="num"><strong>160,068</strong></td>
+          <td class="num">39</td>
+          <td class="num"><strong>4,105</strong></td>
+          <td><span class="stars">&#9733;&#9733;&#9733;</span></td>
+          <td>圧倒的な集客力。未開拓都市が多数あり、拡大余地大</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-goods">goods</span> 勉強グッズ</td>
+          <td class="num"><strong>12,360</strong></td>
+          <td class="num">4</td>
+          <td class="num"><strong>3,090</strong></td>
+          <td><span class="stars">&#9733;&#9733;&#9733;</span></td>
+          <td>最少の投資で高いリターン。記事数を増やすべき</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-method">method</span> 勉強法</td>
+          <td class="num">70,961</td>
+          <td class="num">42</td>
+          <td class="num">1,690</td>
+          <td><span class="stars">&#9733;&#9733;</span><span class="stars-dim">&#9733;</span></td>
+          <td>安定した流入源。ターゲットの悩みに直結するテーマ</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-recommended">recommended</span> 体験レポ</td>
+          <td class="num">7,243</td>
+          <td class="num">34</td>
+          <td class="num">213</td>
+          <td><span class="stars">&#9733;</span><span class="stars-dim">&#9733;&#9733;</span></td>
+          <td>ブランディング目的。SEO記事としては非効率</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-license">license</span> 資格ガイド</td>
+          <td class="num">4,696</td>
+          <td class="num">36</td>
+          <td class="num" style="color:var(--danger);font-weight:700;">130</td>
+          <td><span class="stars-dim">&#9733;&#9733;&#9733;</span></td>
+          <td>CV率は高いが流入が弱い。KW戦略の見直し必要</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-interview">interview</span></td>
+          <td class="num">333</td>
+          <td class="num">14</td>
+          <td class="num" style="color:var(--danger);">24</td>
+          <td><span class="stars-dim">&#9733;&#9733;&#9733;</span></td>
+          <td>SEOには不向き。信頼性の補強コンテンツ</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="insight-box warning">
+    <strong>改善ポイント</strong>
+    license記事は36本もあるが記事あたり130SSと低迷。一方、CV（自習室利用）に最も近い読者を獲得できるカテゴリ。タイトルに「勉強場所」「独学 スケジュール」を追加し、space記事への内部リンクを強化することで改善可能。
+  </div>
+</div>
+
+<!-- ========== 3. 集客キーワードTOP25 ========== -->
+<div class="section">
+  <div class="section-title">
+    <div class="icon">3</div>
+    集客キーワード分析（GA4ランディングページ推定）
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th style="width:40px">#</th>
+          <th>推定キーワード</th>
+          <th>記事タイトル</th>
+          <th>カテゴリ</th>
+          <th class="num">年間SS</th>
+          <th class="num">平均滞在</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="rank">1</td><td>外で勉強できる場所</td><td>外で勉強できる場所14選｜無料の勉強場所や意外な穴場も紹介！</td><td><span class="badge badge-method">method</span></td><td class="num"><strong>30,421</strong></td><td class="num">0:32</td></tr>
+        <tr><td class="rank">2</td><td>名古屋 自習室 おすすめ</td><td>名古屋でおすすめの自習室7選！安い場所から個室があるところまで</td><td><span class="badge badge-space">space</span></td><td class="num"><strong>18,865</strong></td><td class="num">0:39</td></tr>
+        <tr><td class="rank">3</td><td>横浜 勉強できる場所</td><td>横浜で勉強できる場所21選！無料から穴場まで徹底解説！</td><td><span class="badge badge-space">space</span></td><td class="num"><strong>18,708</strong></td><td class="num">1:03</td></tr>
+        <tr><td class="rank">4</td><td>名古屋 勉強できる場所</td><td>名古屋で勉強できる場所22選！無料〜有料の施設を徹底紹介！</td><td><span class="badge badge-space">space</span></td><td class="num"><strong>16,193</strong></td><td class="num">0:46</td></tr>
+        <tr><td class="rank">5</td><td>社会人 勉強アプリ おすすめ</td><td>社会人の勉強に役立つおすすめアプリ10選！</td><td><span class="badge badge-method">method</span></td><td class="num"><strong>15,403</strong></td><td class="num">0:34</td></tr>
+        <tr><td class="rank">6</td><td>広島 勉強できる場所</td><td>【無料・有料】広島で勉強できる穴場10選！</td><td><span class="badge badge-space">space</span></td><td class="num"><strong>13,114</strong></td><td class="num">0:52</td></tr>
+        <tr><td class="rank">7</td><td>東京 勉強できる場所 23区</td><td>【東京23区別】勉強できる場所まとめ</td><td><span class="badge badge-space">space</span></td><td class="num"><strong>11,975</strong></td><td class="num">0:54</td></tr>
+        <tr><td class="rank">8</td><td>大阪 勉強できる場所</td><td>【大阪で勉強できる場所】無料の場所から穴場まで紹介！</td><td><span class="badge badge-space">space</span></td><td class="num"><strong>11,629</strong></td><td class="num">0:42</td></tr>
+        <tr><td class="rank">9</td><td>勉強 お菓子 おすすめ</td><td>勉強するときにおすすめのお菓子の選び方</td><td><span class="badge badge-goods">goods</span></td><td class="num">9,493</td><td class="num">0:23</td></tr>
+        <tr><td class="rank">10</td><td>年末年始 勉強場所</td><td>年末年始に勉強できる場所はここ！</td><td><span class="badge badge-space">space</span></td><td class="num">8,666</td><td class="num">0:40</td></tr>
+        <tr><td class="rank">11</td><td>札幌 勉強できる場所</td><td>【無料・有料】札幌で勉強できる穴場スポット10選！</td><td><span class="badge badge-space">space</span></td><td class="num">8,617</td><td class="num">0:38</td></tr>
+        <tr><td class="rank">12</td><td>ノート 勉強法 大人</td><td>ノートは使うべき？大人の勉強法</td><td><span class="badge badge-method">method</span></td><td class="num">6,235</td><td class="num">0:43</td></tr>
+        <tr><td class="rank">13</td><td>渋谷 勉強できる場所</td><td>渋谷で勉強できる穴場9選！</td><td><span class="badge badge-space">space</span></td><td class="num">6,052</td><td class="num">0:39</td></tr>
+        <tr><td class="rank">14</td><td>熊本 勉強できる場所</td><td>熊本で勉強できる場所完全ガイド【無料＆有料8選】</td><td><span class="badge badge-space">space</span></td><td class="num">5,644</td><td class="num">0:38</td></tr>
+        <tr><td class="rank">15</td><td>東京 自習室 安い</td><td>東京の安い自習室10選！無料・有料別で紹介</td><td><span class="badge badge-space">space</span></td><td class="num">5,093</td><td class="num">0:51</td></tr>
+        <tr><td class="rank">16</td><td>新宿 自習室</td><td>新宿の自習室6選！</td><td><span class="badge badge-space">space</span></td><td class="num">4,790</td><td class="num">0:43</td></tr>
+        <tr><td class="rank">17</td><td>スマホで取れる資格</td><td>スマホだけで取れる資格はある？人気資格を厳選</td><td><span class="badge badge-method">method</span></td><td class="num">3,296</td><td class="num">0:31</td></tr>
+        <tr><td class="rank">18</td><td>ノイキャン イヤホン 勉強</td><td>勉強におすすめのノイズキャンセリングイヤホン</td><td><span class="badge badge-goods">goods</span></td><td class="num">2,811</td><td class="num">0:44</td></tr>
+        <tr><td class="rank">19</td><td>勉強部屋 レイアウト</td><td>東大生の学習部屋から学ぶ！学習環境の整え方10選</td><td><span class="badge badge-method">method</span></td><td class="num">2,090</td><td class="num">0:36</td></tr>
+        <tr><td class="rank">20</td><td>家で勉強できない 社会人</td><td>社会人が家で勉強できない原因は？対策やおすすめの勉強法</td><td><span class="badge badge-method">method</span></td><td class="num">1,833</td><td class="num">0:42</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="insight-box success">
+    <strong>勝ちパターン</strong>
+    「<strong>[都市名] + 勉強できる場所</strong>」が年間1〜3万SSを叩き出す最強KWクラスター。未開拓の都市を攻めることで、確実にトラフィック増が見込める。
+  </div>
+</div>
+
+<!-- ========== 4. ターゲットペルソナ ========== -->
+<div class="section">
+  <div class="section-title">
+    <div class="icon">4</div>
+    ターゲットペルソナと検索行動フロー
+  </div>
+
+  <div style="background:var(--gray-50);border-radius:12px;padding:24px;margin-bottom:20px;border:1px solid var(--gray-200);">
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;text-align:center;">
+      <div>
+        <div style="font-size:32px;margin-bottom:8px;">&#x1F393;</div>
+        <div style="font-weight:700;margin-bottom:4px;">年齢層</div>
+        <div style="font-size:14px;color:var(--gray-500);">大学生を含む20代〜30代</div>
+      </div>
+      <div>
+        <div style="font-size:32px;margin-bottom:8px;">&#x1F4DD;</div>
+        <div style="font-weight:700;margin-bottom:4px;">目的</div>
+        <div style="font-size:14px;color:var(--gray-500);">資格取得を目指している</div>
+      </div>
+      <div>
+        <div style="font-size:32px;margin-bottom:8px;">&#x1F4B0;</div>
+        <div style="font-weight:700;margin-bottom:4px;">支払い意欲</div>
+        <div style="font-size:14px;color:var(--gray-500);">勉強場所に対価を支払える</div>
+      </div>
+    </div>
+  </div>
+
+  <h4 style="font-size:15px;margin-bottom:12px;color:var(--gray-700);">検索行動フロー ＆ 記事カテゴリの対応</h4>
+  <div class="flow">
+    <div class="flow-step">
+      <div class="step-label">認知フェーズ</div>
+      <div>「〇〇資格 勉強時間」</div>
+      <div class="step-kw">→ license記事</div>
+    </div>
+    <div class="flow-arrow">&#x2192;</div>
+    <div class="flow-step">
+      <div class="step-label">比較フェーズ</div>
+      <div>「独学 vs 通信講座」</div>
+      <div class="step-kw">→ method記事</div>
+    </div>
+    <div class="flow-arrow">&#x2192;</div>
+    <div class="flow-step">
+      <div class="step-label">行動フェーズ</div>
+      <div>「[都市名] 勉強場所」</div>
+      <div class="step-kw">→ space記事</div>
+    </div>
+    <div class="flow-arrow">&#x2192;</div>
+    <div class="flow-step cv">
+      <div class="step-label">CV</div>
+      <div>スタディGO利用</div>
+      <div class="step-kw">→ 会員登録・予約</div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== 5. 戦略方針 ========== -->
+<div class="section">
+  <div class="section-title">
+    <div class="icon">5</div>
+    年間記事配分戦略
+  </div>
+
+  <h4 style="margin-bottom:8px;font-size:14px;color:var(--gray-500);">年間48本のカテゴリ配分</h4>
+  <div class="alloc-bar">
+    <div class="alloc-space" style="width:29%;">space 14本</div>
+    <div class="alloc-method" style="width:29%;">method 14本</div>
+    <div class="alloc-license" style="width:25%;">license 12本</div>
+    <div class="alloc-goods" style="width:17%;">goods 8本</div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:20px;">
+    <div style="background:var(--primary-light);padding:16px;border-radius:10px;border-left:4px solid var(--primary);">
+      <div style="font-weight:700;font-size:15px;color:var(--primary);">space 14本</div>
+      <div style="font-size:13px;color:var(--gray-500);margin-top:4px;">未開拓都市の「勉強できる場所」記事。最も確実なSS獲得手段</div>
+    </div>
+    <div style="background:var(--secondary-light);padding:16px;border-radius:10px;border-left:4px solid var(--secondary);">
+      <div style="font-weight:700;font-size:15px;color:var(--secondary);">method 14本</div>
+      <div style="font-size:13px;color:var(--gray-500);margin-top:4px;">勉強の悩み・習慣化・試験対策。ペルソナの行動を後押し</div>
+    </div>
+    <div style="background:var(--accent-light);padding:16px;border-radius:10px;border-left:4px solid var(--accent);">
+      <div style="font-weight:700;font-size:15px;color:var(--accent);">license 12本</div>
+      <div style="font-size:13px;color:var(--gray-500);margin-top:4px;">FP・行政書士・IT系など未カバー資格。CV最短ルート</div>
+    </div>
+    <div style="background:#fce7f3;padding:16px;border-radius:10px;border-left:4px solid #db2777;">
+      <div style="font-weight:700;font-size:15px;color:#db2777;">goods 8本</div>
+      <div style="font-size:13px;color:var(--gray-500);margin-top:4px;">勉強グッズ・ガジェット。記事あたりROI最高のカテゴリ</div>
+    </div>
+  </div>
+
+  <h4 style="margin-top:28px;margin-bottom:12px;font-size:15px;color:var(--gray-700);">未カバー領域（今回攻めるエリア）</h4>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+    <div>
+      <div style="font-weight:600;font-size:14px;margin-bottom:8px;">&#x1F4CD; 未開拓都市・エリア</div>
+      <div class="tag-cloud">
+        <span class="tag uncovered">仙台</span>
+        <span class="tag uncovered">岡山</span>
+        <span class="tag uncovered">新潟</span>
+        <span class="tag uncovered">金沢</span>
+        <span class="tag uncovered">長野・松本</span>
+        <span class="tag uncovered">鹿児島</span>
+        <span class="tag uncovered">大宮・浦和</span>
+        <span class="tag uncovered">上野・秋葉原</span>
+        <span class="tag uncovered">品川・五反田</span>
+        <span class="tag uncovered">立川・吉祥寺</span>
+        <span class="tag uncovered">町田・八王子</span>
+      </div>
+    </div>
+    <div>
+      <div style="font-weight:600;font-size:14px;margin-bottom:8px;">&#x1F4DA; 未カバー資格</div>
+      <div class="tag-cloud">
+        <span class="tag uncovered">FP（2級・3級）</span>
+        <span class="tag uncovered">行政書士</span>
+        <span class="tag uncovered">ITパスポート</span>
+        <span class="tag uncovered">基本情報技術者</span>
+        <span class="tag uncovered">TOEIC</span>
+        <span class="tag uncovered">司法書士</span>
+        <span class="tag uncovered">簿記3級</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== 6. 年間カレンダー ========== -->
+<div class="section">
+  <div class="section-title">
+    <div class="icon">6</div>
+    年間記事カレンダー（2026年4月 〜 2027年3月）
+  </div>
+
+  <h4 style="font-size:14px;color:var(--gray-500);margin-bottom:12px;">季節別 需要ヒートマップ</h4>
+  <div class="heatmap-row">
+    <div class="heatmap-cell" style="background:#fef3c7;">
+      <div class="hm-month">4月</div>
+      <div style="color:#92400e;">新年度</div>
+    </div>
+    <div class="heatmap-cell" style="background:#fef3c7;">
+      <div class="hm-month">5月</div>
+      <div style="color:#92400e;">GW・FP</div>
+    </div>
+    <div class="heatmap-cell" style="background:#dbeafe;">
+      <div class="hm-month">6月</div>
+      <div style="color:#1e40af;">梅雨・簿記</div>
+    </div>
+    <div class="heatmap-cell" style="background:#bfdbfe;">
+      <div class="hm-month">7月</div>
+      <div style="color:#1e40af;">夏開始</div>
+    </div>
+    <div class="heatmap-cell" style="background:#93c5fd;">
+      <div class="hm-month">8月</div>
+      <div style="color:#1e3a8a;">夏休み</div>
+    </div>
+    <div class="heatmap-cell" style="background:#fed7aa;">
+      <div class="hm-month">9月</div>
+      <div style="color:#9a3412;">秋開始</div>
+    </div>
+    <div class="heatmap-cell" style="background:#fdba74;">
+      <div class="hm-month">10月</div>
+      <div style="color:#7c2d12;">宅建・FP</div>
+    </div>
+    <div class="heatmap-cell" style="background:#fb923c;color:white;">
+      <div class="hm-month">11月</div>
+      <div>行政書士</div>
+    </div>
+    <div class="heatmap-cell" style="background:#c7d2fe;">
+      <div class="hm-month">12月</div>
+      <div style="color:#3730a3;">年末目標</div>
+    </div>
+    <div class="heatmap-cell" style="background:#a5b4fc;">
+      <div class="hm-month">1月</div>
+      <div style="color:#312e81;">新年抱負</div>
+    </div>
+    <div class="heatmap-cell" style="background:#c7d2fe;">
+      <div class="hm-month">2月</div>
+      <div style="color:#3730a3;">確定申告</div>
+    </div>
+    <div class="heatmap-cell" style="background:#fef3c7;">
+      <div class="hm-month">3月</div>
+      <div style="color:#92400e;">春休み</div>
+    </div>
+  </div>
+
+  <!-- === 4月 === -->
+  <div class="month-card spring">
+    <div class="month-header">
+      <div class="month-label"><div class="month-num">4</div> 2026年4月</div>
+      <div class="season-tag">新年度スタート / FP試験1ヶ月前</div>
+    </div>
+    <div class="month-body">
+      <table>
+        <thead><tr><th>#</th><th>カテゴリ</th><th>メインKW</th><th>記事タイトル案</th></tr></thead>
+        <tbody>
+          <tr><td class="rank">1</td><td><span class="badge badge-license">license</span></td><td>FP3級 独学 勉強時間</td><td>FP3級は独学で合格できる！必要な勉強時間・おすすめテキスト・勉強場所まで徹底解説</td></tr>
+          <tr><td class="rank">2</td><td><span class="badge badge-method">method</span></td><td>新社会人 資格 おすすめ</td><td>新社会人が最初に取るべき資格5選｜仕事と勉強を両立するコツと勉強場所の選び方</td></tr>
+          <tr><td class="rank">3</td><td><span class="badge badge-space">space</span></td><td>仙台 勉強できる場所</td><td>仙台で勉強できる場所おすすめ12選！無料〜有料まで完全ガイド</td></tr>
+          <tr><td class="rank">4</td><td><span class="badge badge-goods">goods</span></td><td>勉強 文房具 おすすめ</td><td>資格勉強がはかどるおすすめ文房具15選！社会人・大学生の効率アップアイテム</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="month-note"><strong>季節ポイント:</strong> 新年度で「何か資格を取ろう」のモチベーションが高まる時期。FP試験（5月）の1ヶ月前で「FP 勉強法」の検索が急増。</div>
+  </div>
+
+  <!-- === 5月 === -->
+  <div class="month-card spring">
+    <div class="month-header">
+      <div class="month-label"><div class="month-num">5</div> 2026年5月</div>
+      <div class="season-tag">GW / FP試験月</div>
+    </div>
+    <div class="month-body">
+      <table>
+        <thead><tr><th>#</th><th>カテゴリ</th><th>メインKW</th><th>記事タイトル案</th></tr></thead>
+        <tbody>
+          <tr><td class="rank">5</td><td><span class="badge badge-license">license</span></td><td>FP2級 独学 勉強法</td><td>FP2級に独学で一発合格する勉強法｜3級との違い・おすすめテキスト・スケジュール</td></tr>
+          <tr><td class="rank">6</td><td><span class="badge badge-space">space</span></td><td>岡山 勉強できる場所</td><td>岡山で勉強できる場所おすすめ10選！無料の図書館から有料自習室まで</td></tr>
+          <tr><td class="rank">7</td><td><span class="badge badge-method">method</span></td><td>GW 勉強 追い込み 計画</td><td>GWに差がつく！連休を活用した資格勉強の計画の立て方と集中できる環境づくり</td></tr>
+          <tr><td class="rank">8</td><td><span class="badge badge-goods">goods</span></td><td>勉強 ドリンク おすすめ</td><td>勉強中の飲み物はこれが正解！集中力を高めるおすすめドリンク10選と選び方</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="month-note"><strong>季節ポイント:</strong> GW「まとまった時間に勉強したい」需要。FP試験当月。</div>
+  </div>
+
+  <!-- === 6月 === -->
+  <div class="month-card summer">
+    <div class="month-header">
+      <div class="month-label"><div class="month-num">6</div> 2026年6月</div>
+      <div class="season-tag">梅雨 / 簿記試験月</div>
+    </div>
+    <div class="month-body">
+      <table>
+        <thead><tr><th>#</th><th>カテゴリ</th><th>メインKW</th><th>記事タイトル案</th></tr></thead>
+        <tbody>
+          <tr><td class="rank">9</td><td><span class="badge badge-license">license</span></td><td>簿記3級 独学 最短</td><td>簿記3級は2週間で受かる？最短合格のための勉強法・スケジュール・おすすめテキスト</td></tr>
+          <tr><td class="rank">10</td><td><span class="badge badge-space">space</span></td><td>新潟 勉強できる場所</td><td>新潟で勉強できる場所おすすめ8選！無料スポットから集中できる自習室まで</td></tr>
+          <tr><td class="rank">11</td><td><span class="badge badge-method">method</span></td><td>梅雨 勉強場所 雨の日</td><td>梅雨でも快適に勉強できる場所とは？雨の日の勉強場所選びと集中力キープ術</td></tr>
+          <tr><td class="rank">12</td><td><span class="badge badge-license">license</span></td><td>行政書士 独学 勉強時間</td><td>行政書士に独学で合格するには？必要な勉強時間・科目別攻略法・おすすめテキスト</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="month-note"><strong>季節ポイント:</strong> 簿記試験（6月）当月。梅雨で勉強場所需要増。行政書士（11月）勉強開始者。</div>
+  </div>
+
+  <!-- === 7月 === -->
+  <div class="month-card summer">
+    <div class="month-header">
+      <div class="month-label"><div class="month-num">7</div> 2026年7月</div>
+      <div class="season-tag">夏の勉強シーズン開幕</div>
+    </div>
+    <div class="month-body">
+      <table>
+        <thead><tr><th>#</th><th>カテゴリ</th><th>メインKW</th><th>記事タイトル案</th></tr></thead>
+        <tbody>
+          <tr><td class="rank">13</td><td><span class="badge badge-license">license</span></td><td>宅建 3ヶ月 勉強スケジュール</td><td>宅建に3ヶ月で合格する勉強スケジュール！社会人向け時間配分とおすすめ勉強場所</td></tr>
+          <tr><td class="rank">14</td><td><span class="badge badge-space">space</span></td><td>金沢 勉強できる場所</td><td>金沢・石川で勉強できる場所おすすめ8選！カフェから自習室まで厳選</td></tr>
+          <tr><td class="rank">15</td><td><span class="badge badge-method">method</span></td><td>夏 勉強 暑さ対策 集中</td><td>暑い夏でも集中して勉強する方法｜涼しい勉強場所と暑さ対策のコツ</td></tr>
+          <tr><td class="rank">16</td><td><span class="badge badge-goods">goods</span></td><td>勉強 椅子 デスク おすすめ</td><td>自宅勉強の効率が激変！資格勉強におすすめの椅子・デスク10選【予算別】</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="month-note"><strong>季節ポイント:</strong> 宅建（10月）まで3ヶ月の追い込み開始。夏休み＋暑さで「涼しい場所で勉強したい」需要。</div>
+  </div>
+
+  <!-- === 8月 === -->
+  <div class="month-card summer">
+    <div class="month-header">
+      <div class="month-label"><div class="month-num">8</div> 2026年8月</div>
+      <div class="season-tag">夏休み / 税理士・社労士試験</div>
+    </div>
+    <div class="month-body">
+      <table>
+        <thead><tr><th>#</th><th>カテゴリ</th><th>メインKW</th><th>記事タイトル案</th></tr></thead>
+        <tbody>
+          <tr><td class="rank">17</td><td><span class="badge badge-method">method</span></td><td>夏休み 勉強計画 大学生</td><td>大学生の夏休み勉強計画ガイド！資格取得に差をつける40日間の過ごし方</td></tr>
+          <tr><td class="rank">18</td><td><span class="badge badge-space">space</span></td><td>鹿児島 勉強できる場所</td><td>鹿児島で勉強できる場所おすすめ8選！無料の施設から穴場まで</td></tr>
+          <tr><td class="rank">19</td><td><span class="badge badge-license">license</span></td><td>ITパスポート 独学 勉強時間</td><td>ITパスポートは独学で何時間？社会人・大学生向けの効率的な勉強法と合格のコツ</td></tr>
+          <tr><td class="rank">20</td><td><span class="badge badge-goods">goods</span></td><td>勉強 タイマーアプリ おすすめ</td><td>勉強タイマーアプリおすすめ8選｜ポモドーロ・ストップウォッチ・集中管理を比較</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="month-note"><strong>季節ポイント:</strong> 大学生の夏休み。税理士・社労士試験（8月）。IT系資格の受験者増加期。</div>
+  </div>
+
+  <!-- === 9月 === -->
+  <div class="month-card autumn">
+    <div class="month-header">
+      <div class="month-label"><div class="month-num">9</div> 2026年9月</div>
+      <div class="season-tag">秋の資格シーズン開始</div>
+    </div>
+    <div class="month-body">
+      <table>
+        <thead><tr><th>#</th><th>カテゴリ</th><th>メインKW</th><th>記事タイトル案</th></tr></thead>
+        <tbody>
+          <tr><td class="rank">21</td><td><span class="badge badge-license">license</span></td><td>行政書士 直前対策 2ヶ月</td><td>行政書士試験まであと2ヶ月！直前期の追い込み勉強法と得点戦略</td></tr>
+          <tr><td class="rank">22</td><td><span class="badge badge-space">space</span></td><td>長野 松本 勉強できる場所</td><td>長野・松本で勉強できる場所おすすめ8選！駅近の自習室やカフェを紹介</td></tr>
+          <tr><td class="rank">23</td><td><span class="badge badge-method">method</span></td><td>仕事 勉強 両立 スケジュール</td><td>仕事と資格勉強を両立するスケジュール管理術｜社会人が合格するための時間の作り方</td></tr>
+          <tr><td class="rank">24</td><td><span class="badge badge-goods">goods</span></td><td>デジタルノート アプリ 勉強</td><td>資格勉強はデジタルノートが最強！GoodNotes・Notion・Anki徹底比較【2027年版】</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="month-note"><strong>季節ポイント:</strong> 行政書士（11月）2ヶ月前。秋はモチベーション最高潮でトラフィック急増期。</div>
+  </div>
+
+  <!-- === 10月 === -->
+  <div class="month-card autumn">
+    <div class="month-header">
+      <div class="month-label"><div class="month-num">10</div> 2026年10月</div>
+      <div class="season-tag">宅建・FP試験月 / トラフィックピーク帯</div>
+    </div>
+    <div class="month-body">
+      <table>
+        <thead><tr><th>#</th><th>カテゴリ</th><th>メインKW</th><th>記事タイトル案</th></tr></thead>
+        <tbody>
+          <tr><td class="rank">25</td><td><span class="badge badge-method">method</span></td><td>資格試験 前日 過ごし方</td><td>資格試験の前日・当日の過ごし方完全ガイド｜やるべきこと・持ち物・メンタル管理</td></tr>
+          <tr><td class="rank">26</td><td><span class="badge badge-space">space</span></td><td>上野 秋葉原 御茶ノ水 勉強</td><td>上野・秋葉原・御茶ノ水エリアで勉強できる場所10選｜学生街ならではの穴場を紹介</td></tr>
+          <tr><td class="rank">27</td><td><span class="badge badge-license">license</span></td><td>基本情報技術者 独学 勉強法</td><td>基本情報技術者試験に独学で合格する勉強法！必要時間・科目別対策・午後問題攻略</td></tr>
+          <tr><td class="rank">28</td><td><span class="badge badge-method">method</span></td><td>社会人 資格勉強 場所 比較</td><td>社会人が資格勉強に使うべき勉強場所とは？カフェ・自習室・コワーキングを目的別に比較</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="month-note"><strong>季節ポイント:</strong> 宅建・FP試験月。トラフィックがピーク帯（月間28,000SS↑）。「試験前日」KWの需要増。</div>
+  </div>
+
+  <!-- === 11月 === -->
+  <div class="month-card autumn">
+    <div class="month-header">
+      <div class="month-label"><div class="month-num">11</div> 2026年11月</div>
+      <div class="season-tag">行政書士・簿記試験 / トラフィック最大</div>
+    </div>
+    <div class="month-body">
+      <table>
+        <thead><tr><th>#</th><th>カテゴリ</th><th>メインKW</th><th>記事タイトル案</th></tr></thead>
+        <tbody>
+          <tr><td class="rank">29</td><td><span class="badge badge-license">license</span></td><td>簿記2級 3ヶ月 スケジュール</td><td>簿記2級に3ヶ月で合格するスケジュール！働きながら独学で受かるコツ</td></tr>
+          <tr><td class="rank">30</td><td><span class="badge badge-space">space</span></td><td>品川 五反田 勉強できる場所</td><td>品川・五反田・大崎エリアで勉強できる場所8選｜駅近の自習室やカフェを厳選</td></tr>
+          <tr><td class="rank">31</td><td><span class="badge badge-method">method</span></td><td>独学 通信講座 どっち 資格</td><td>資格勉強は独学と通信講座どっちがいい？メリット・デメリットと選び方を解説</td></tr>
+          <tr><td class="rank">32</td><td><span class="badge badge-goods">goods</span></td><td>勉強 便利グッズ プレゼント</td><td>資格勉強を頑張る人へのプレゼント15選｜実用的で喜ばれる便利グッズ厳選</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="month-note"><strong>季節ポイント:</strong> 行政書士・簿記試験（11月）。トラフィック最大月。年末のプレゼント需要に合わせたgoods記事。</div>
+  </div>
+
+  <!-- === 12月 === -->
+  <div class="month-card winter">
+    <div class="month-header">
+      <div class="month-label"><div class="month-num">12</div> 2026年12月</div>
+      <div class="season-tag">年末振り返り / 来年の目標設定</div>
+    </div>
+    <div class="month-body">
+      <table>
+        <thead><tr><th>#</th><th>カテゴリ</th><th>メインKW</th><th>記事タイトル案</th></tr></thead>
+        <tbody>
+          <tr><td class="rank">33</td><td><span class="badge badge-method">method</span></td><td>2027 取りたい資格 おすすめ</td><td>【2027年に取りたい】20代・30代におすすめの資格ランキング10選｜将来性と難易度で比較</td></tr>
+          <tr><td class="rank">34</td><td><span class="badge badge-space">space</span></td><td>年末年始 勉強場所 2027</td><td>【2026-2027】年末年始に勉強できる場所はここ！正月も開いている自習室・カフェまとめ</td></tr>
+          <tr><td class="rank">35</td><td><span class="badge badge-license">license</span></td><td>TOEIC 勉強法 社会人 短期間</td><td>TOEIC 600→800点を最短で達成する勉強法｜社会人のための時間活用術と勉強場所</td></tr>
+          <tr><td class="rank">36</td><td><span class="badge badge-goods">goods</span></td><td>勉強 ガジェット おすすめ</td><td>資格勉強の効率を上げるガジェット10選｜タブレット・電子辞書・スマートウォッチ活用法</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="month-note"><strong>季節ポイント:</strong> 「来年こそ資格を取りたい」需要。年末年始の勉強場所KW。TOEIC（1月）の勉強開始者。</div>
+  </div>
+
+  <!-- === 1月 === -->
+  <div class="month-card winter">
+    <div class="month-header">
+      <div class="month-label"><div class="month-num">1</div> 2027年1月</div>
+      <div class="season-tag">新年の抱負 / FP試験 / 勉強開始需要ピーク</div>
+    </div>
+    <div class="month-body">
+      <table>
+        <thead><tr><th>#</th><th>カテゴリ</th><th>メインKW</th><th>記事タイトル案</th></tr></thead>
+        <tbody>
+          <tr><td class="rank">37</td><td><span class="badge badge-method">method</span></td><td>勉強 習慣化 続かない 社会人</td><td>勉強が続かない社会人必見！資格勉強を習慣化する7つのコツと環境づくり</td></tr>
+          <tr><td class="rank">38</td><td><span class="badge badge-space">space</span></td><td>大宮 浦和 勉強できる場所</td><td>大宮・浦和で勉強できる場所おすすめ10選！駅近の自習室からカフェまで</td></tr>
+          <tr><td class="rank">39</td><td><span class="badge badge-license">license</span></td><td>社労士 勉強 いつから</td><td>社労士試験の勉強はいつから始める？合格までのスケジュールと独学のポイント</td></tr>
+          <tr><td class="rank">40</td><td><span class="badge badge-method">method</span></td><td>過去問 使い方 効率的</td><td>資格試験の過去問活用法｜最短合格のための効率的な解き方と復習サイクル</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="month-note"><strong>季節ポイント:</strong> 新年「勉強を始めたい」需要が急増。FP試験（1月）。社労士（8月）の勉強開始時期。</div>
+  </div>
+
+  <!-- === 2月 === -->
+  <div class="month-card winter">
+    <div class="month-header">
+      <div class="month-label"><div class="month-num">2</div> 2027年2月</div>
+      <div class="season-tag">確定申告期 / 年度末前</div>
+    </div>
+    <div class="month-body">
+      <table>
+        <thead><tr><th>#</th><th>カテゴリ</th><th>メインKW</th><th>記事タイトル案</th></tr></thead>
+        <tbody>
+          <tr><td class="rank">41</td><td><span class="badge badge-license">license</span></td><td>宅建 勉強 いつから 半年</td><td>宅建の勉強はいつから？半年前からの学習計画と独学で合格するための戦略</td></tr>
+          <tr><td class="rank">42</td><td><span class="badge badge-space">space</span></td><td>立川 吉祥寺 中央線 勉強</td><td>立川・吉祥寺・中央線沿線で勉強できる場所12選｜穴場の自習室を厳選</td></tr>
+          <tr><td class="rank">43</td><td><span class="badge badge-method">method</span></td><td>勉強仲間 見つけ方 社会人</td><td>一人で勉強が辛い社会人へ｜勉強仲間の見つけ方と一緒に頑張れる環境の作り方</td></tr>
+          <tr><td class="rank">44</td><td><span class="badge badge-goods">goods</span></td><td>勉強 BGM 集中 音楽</td><td>勉強中のBGMは効果ある？集中できる音楽の選び方とおすすめイヤホン活用術</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="month-note"><strong>季節ポイント:</strong> 宅建（10月）半年前。確定申告で税理士・FP関連の検索増加。年度末「来年度こそ」の意欲。</div>
+  </div>
+
+  <!-- === 3月 === -->
+  <div class="month-card spring">
+    <div class="month-header">
+      <div class="month-label"><div class="month-num">3</div> 2027年3月</div>
+      <div class="season-tag">新年度直前 / 春休み</div>
+    </div>
+    <div class="month-body">
+      <table>
+        <thead><tr><th>#</th><th>カテゴリ</th><th>メインKW</th><th>記事タイトル案</th></tr></thead>
+        <tbody>
+          <tr><td class="rank">45</td><td><span class="badge badge-method">method</span></td><td>春休み 勉強 大学生 資格</td><td>大学生の春休みにやるべき勉強リスト｜就活に役立つ資格と効率的な時間の使い方</td></tr>
+          <tr><td class="rank">46</td><td><span class="badge badge-space">space</span></td><td>町田 八王子 勉強できる場所</td><td>町田・八王子エリアで勉強できる場所おすすめ10選｜大学生にも使いやすい穴場を紹介</td></tr>
+          <tr><td class="rank">47</td><td><span class="badge badge-license">license</span></td><td>司法書士 独学 勉強時間</td><td>司法書士試験に独学で挑戦！必要な勉強時間・難易度・科目別の攻略ポイント</td></tr>
+          <tr><td class="rank">48</td><td><span class="badge badge-method">method</span></td><td>資格勉強 挫折 やめたい</td><td>資格勉強に挫折しそうなときの乗り越え方｜モチベーション回復の5つの方法と環境の見直し</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="month-note"><strong>季節ポイント:</strong> 春休み（大学生）。新年度準備。長期勉強の中だるみ対策需要。</div>
+  </div>
+</div>
+
+<!-- ========== 7. KPI目標 ========== -->
+<div class="section">
+  <div class="section-title">
+    <div class="icon">7</div>
+    KPI目標
+  </div>
+
+  <div class="chart-container" style="max-height:300px;">
+    <canvas id="kpiChart"></canvas>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>指標</th>
+          <th class="num">現状（2025/3-2026/3）</th>
+          <th class="num">目標（2026/4-2027/3）</th>
+          <th class="num">成長率</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>月間オーガニックSS</td>
+          <td class="num">平均 21,227</td>
+          <td class="num" style="color:var(--primary);font-weight:700;">平均 35,000</td>
+          <td class="num" style="color:var(--secondary);font-weight:700;">+65%</td>
+        </tr>
+        <tr>
+          <td>月間記事公開数</td>
+          <td class="num">平均 2-3本</td>
+          <td class="num" style="font-weight:700;">4本（固定）</td>
+          <td class="num" style="color:var(--secondary);">+50%</td>
+        </tr>
+        <tr>
+          <td>新規記事の平均SS/記事</td>
+          <td class="num">-</td>
+          <td class="num" style="font-weight:700;">1,500/月（公開6ヶ月後）</td>
+          <td class="num">-</td>
+        </tr>
+        <tr>
+          <td>license記事の平均SS/記事</td>
+          <td class="num" style="color:var(--danger);">130</td>
+          <td class="num" style="font-weight:700;">500</td>
+          <td class="num" style="color:var(--secondary);font-weight:700;">+285%</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- フッター -->
+<div class="footer">
+  StudyGO Media Plan 2026-2027 ｜ データソース: GA4 (Analytics Property 414515973) ｜ 作成日: 2026/03/06
+</div>
+
+</div><!-- /container -->
+
+<script>
+// === 月別オーガニックSSチャート ===
+new Chart(document.getElementById('monthlyChart'), {
+  type: 'bar',
+  data: {
+    labels: ['25/03','25/04','25/05','25/06','25/07','25/08','25/09','25/10','25/11','25/12','26/01','26/02','26/03*'],
+    datasets: [{
+      label: 'オーガニック検索セッション',
+      data: [7587, 9906, 13060, 13154, 16342, 21293, 24354, 28450, 31311, 32725, 30427, 24433, 3027],
+      backgroundColor: [
+        '#93c5fd','#93c5fd','#93c5fd','#93c5fd','#60a5fa','#3b82f6','#2563eb','#1d4ed8','#1e40af','#1e3a8a','#1e40af','#2563eb','#93c5fd'
+      ],
+      borderRadius: 6,
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      title: { display: true, text: '月別オーガニック検索セッション推移', font: { size: 15, weight: 'bold' }, padding: { bottom: 16 } },
+      tooltip: {
+        callbacks: { label: ctx => ctx.parsed.y.toLocaleString() + ' セッション' }
+      }
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        ticks: { callback: v => (v/1000)+'K' },
+        grid: { color: '#f3f4f6' }
+      },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+// === カテゴリ別パイチャート ===
+new Chart(document.getElementById('categoryPieChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['space', 'method', 'goods', 'recommended', 'license', 'interview'],
+    datasets: [{
+      data: [160068, 70961, 12360, 7243, 4696, 333],
+      backgroundColor: ['#2563eb','#059669','#db2777','#7c3aed','#d97706','#6b7280'],
+      borderWidth: 2,
+      borderColor: '#fff',
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: true,
+    plugins: {
+      legend: { position: 'bottom', labels: { padding: 12, font: { size: 12 } } },
+      tooltip: {
+        callbacks: {
+          label: ctx => {
+            const total = ctx.dataset.data.reduce((a,b) => a+b, 0);
+            const pct = (ctx.parsed / total * 100).toFixed(1);
+            return ctx.label + ': ' + ctx.parsed.toLocaleString() + ' SS (' + pct + '%)';
+          }
+        }
+      }
+    }
+  }
+});
+
+// === 1記事あたりSSバーチャート ===
+new Chart(document.getElementById('categoryEffChart'), {
+  type: 'bar',
+  data: {
+    labels: ['space', 'goods', 'method', 'recommended', 'license', 'interview'],
+    datasets: [{
+      label: 'SS/記事',
+      data: [4105, 3090, 1690, 213, 130, 24],
+      backgroundColor: ['#2563eb','#db2777','#059669','#7c3aed','#d97706','#6b7280'],
+      borderRadius: 6,
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    maintainAspectRatio: true,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: { label: ctx => ctx.parsed.x.toLocaleString() + ' SS/記事' }
+      }
+    },
+    scales: {
+      x: {
+        beginAtZero: true,
+        ticks: { callback: v => v.toLocaleString() },
+        grid: { color: '#f3f4f6' }
+      },
+      y: { grid: { display: false } }
+    }
+  }
+});
+
+// === KPI目標チャート ===
+new Chart(document.getElementById('kpiChart'), {
+  type: 'line',
+  data: {
+    labels: ['26/04','26/05','26/06','26/07','26/08','26/09','26/10','26/11','26/12','27/01','27/02','27/03'],
+    datasets: [
+      {
+        label: '目標（月間SS）',
+        data: [25000, 27000, 29000, 31000, 33000, 35000, 38000, 40000, 42000, 38000, 32000, 28000],
+        borderColor: '#2563eb',
+        backgroundColor: 'rgba(37,99,235,0.1)',
+        fill: true,
+        tension: 0.3,
+        borderWidth: 3,
+        pointRadius: 5,
+        pointBackgroundColor: '#2563eb',
+      },
+      {
+        label: '前年同月実績',
+        data: [9906, 13060, 13154, 16342, 21293, 24354, 28450, 31311, 32725, 30427, 24433, 7587],
+        borderColor: '#d1d5db',
+        borderDash: [6,4],
+        tension: 0.3,
+        borderWidth: 2,
+        pointRadius: 4,
+        pointBackgroundColor: '#9ca3af',
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      title: { display: true, text: 'KPI目標：月間オーガニックSS推移', font: { size: 15, weight: 'bold' }, padding: { bottom: 16 } },
+      legend: { position: 'bottom' },
+      tooltip: {
+        callbacks: { label: ctx => ctx.dataset.label + ': ' + ctx.parsed.y.toLocaleString() }
+      }
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        ticks: { callback: v => (v/1000)+'K' },
+        grid: { color: '#f3f4f6' }
+      },
+      x: { grid: { display: false } }
+    }
+  }
+});
+</script>
+
+</body>
+</html>
