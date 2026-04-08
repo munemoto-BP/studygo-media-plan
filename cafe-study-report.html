@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>カフェ勉強の実態調査 × スタディGO戦略分析</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<style>
+:root {
+  --primary: #1a73e8;
+  --primary-light: #e8f0fe;
+  --danger: #d93025;
+  --danger-light: #fce8e6;
+  --success: #1e8e3e;
+  --success-light: #e6f4ea;
+  --warning: #f9ab00;
+  --warning-light: #fef7e0;
+  --gray-50: #f8f9fa;
+  --gray-100: #f1f3f4;
+  --gray-200: #e8eaed;
+  --gray-300: #dadce0;
+  --gray-600: #5f6368;
+  --gray-800: #3c4043;
+  --gray-900: #202124;
+  --card-shadow: 0 1px 3px rgba(0,0,0,.12), 0 1px 2px rgba(0,0,0,.08);
+  --card-shadow-hover: 0 4px 12px rgba(0,0,0,.15);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', 'Hiragino Sans', 'Noto Sans JP', sans-serif; background: var(--gray-50); color: var(--gray-900); line-height: 1.7; }
+.container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+/* Header */
+.hero { background: linear-gradient(135deg, #1a73e8 0%, #0d47a1 100%); color: #fff; padding: 48px 0 40px; }
+.hero h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+.hero .subtitle { font-size: 15px; opacity: .85; }
+.hero .meta { margin-top: 16px; font-size: 13px; opacity: .7; }
+
+/* Navigation */
+.nav-tabs { background: #fff; border-bottom: 1px solid var(--gray-300); position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 4px rgba(0,0,0,.06); }
+.nav-tabs .container { display: flex; gap: 0; overflow-x: auto; }
+.nav-tab { padding: 12px 20px; font-size: 13px; font-weight: 500; color: var(--gray-600); cursor: pointer; border-bottom: 3px solid transparent; white-space: nowrap; transition: all .2s; }
+.nav-tab:hover { color: var(--primary); background: var(--primary-light); }
+.nav-tab.active { color: var(--primary); border-bottom-color: var(--primary); }
+
+/* Sections */
+.section { display: none; padding: 32px 0 48px; }
+.section.active { display: block; }
+.section-title { font-size: 22px; font-weight: 700; margin-bottom: 8px; color: var(--gray-900); }
+.section-desc { font-size: 14px; color: var(--gray-600); margin-bottom: 24px; }
+
+/* Cards */
+.card { background: #fff; border-radius: 12px; box-shadow: var(--card-shadow); padding: 24px; margin-bottom: 20px; transition: box-shadow .2s; }
+.card:hover { box-shadow: var(--card-shadow-hover); }
+.card-title { font-size: 16px; font-weight: 700; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+.card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
+.card-grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+
+/* KPI Cards */
+.kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 24px; }
+.kpi { background: #fff; border-radius: 12px; box-shadow: var(--card-shadow); padding: 20px; text-align: center; }
+.kpi .value { font-size: 32px; font-weight: 800; color: var(--primary); }
+.kpi .label { font-size: 12px; color: var(--gray-600); margin-top: 4px; }
+.kpi.danger .value { color: var(--danger); }
+.kpi.success .value { color: var(--success); }
+.kpi.warning .value { color: var(--warning); }
+
+/* Tables */
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th { background: var(--gray-100); font-weight: 600; text-align: left; padding: 10px 12px; border-bottom: 2px solid var(--gray-300); white-space: nowrap; }
+td { padding: 10px 12px; border-bottom: 1px solid var(--gray-200); }
+tr:hover td { background: var(--gray-50); }
+
+/* Badges */
+.badge { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; }
+.badge-high { background: var(--danger-light); color: var(--danger); }
+.badge-mid { background: var(--warning-light); color: #e37400; }
+.badge-low { background: var(--success-light); color: var(--success); }
+.badge-best { background: var(--primary-light); color: var(--primary); }
+
+/* Rating */
+.rating { display: inline-flex; gap: 2px; }
+.rating .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--gray-200); }
+.rating .dot.filled { background: var(--primary); }
+.rating .dot.filled-warn { background: var(--warning); }
+.rating .dot.filled-danger { background: var(--danger); }
+
+/* Flow */
+.flow { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 16px 0; }
+.flow-step { background: #fff; border: 2px solid var(--gray-300); border-radius: 10px; padding: 12px 16px; font-size: 13px; font-weight: 600; text-align: center; min-width: 120px; }
+.flow-step.highlight { border-color: var(--primary); background: var(--primary-light); }
+.flow-step.danger { border-color: var(--danger); background: var(--danger-light); }
+.flow-arrow { font-size: 20px; color: var(--gray-600); }
+.flow-arrow-down { display: block; text-align: center; font-size: 20px; color: var(--gray-600); margin: 4px 0; }
+
+/* Spectrum */
+.spectrum { margin: 16px 0; }
+.spectrum-label { display: flex; justify-content: space-between; font-size: 11px; color: var(--gray-600); margin-bottom: 4px; }
+.spectrum-bar { height: 8px; border-radius: 4px; background: linear-gradient(90deg, #e8f0fe 0%, #1a73e8 100%); position: relative; }
+.spectrum-markers { position: relative; height: 28px; margin-top: 4px; }
+.spectrum-marker { position: absolute; transform: translateX(-50%); font-size: 10px; color: var(--gray-800); text-align: center; white-space: nowrap; }
+.spectrum-marker::before { content: ''; display: block; width: 2px; height: 10px; background: var(--gray-800); margin: 0 auto 2px; }
+
+/* Persona Cards */
+.persona-card { background: #fff; border-radius: 12px; box-shadow: var(--card-shadow); overflow: hidden; }
+.persona-header { padding: 16px 20px; color: #fff; font-weight: 700; font-size: 14px; }
+.persona-body { padding: 16px 20px; font-size: 13px; }
+.persona-body dt { font-weight: 600; color: var(--gray-600); font-size: 11px; margin-top: 8px; }
+.persona-body dd { margin-left: 0; }
+.persona-body dd:first-of-type { margin-top: 0; }
+
+/* Risk meter */
+.risk-meter { display: flex; gap: 4px; align-items: center; }
+.risk-block { width: 24px; height: 14px; border-radius: 3px; background: var(--gray-200); }
+.risk-block.active-low { background: var(--success); }
+.risk-block.active-mid { background: var(--warning); }
+.risk-block.active-high { background: var(--danger); }
+
+/* Assessment */
+.assess-row { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--gray-200); }
+.assess-row:last-child { border-bottom: none; }
+.assess-label { flex: 1; font-size: 13px; font-weight: 600; min-width: 200px; }
+.assess-verdict { font-size: 12px; font-weight: 700; padding: 4px 12px; border-radius: 6px; white-space: nowrap; }
+.verdict-go { background: var(--success-light); color: var(--success); }
+.verdict-caution { background: var(--warning-light); color: #e37400; }
+.verdict-stop { background: var(--danger-light); color: var(--danger); }
+.verdict-later { background: var(--gray-100); color: var(--gray-600); }
+
+/* Chart containers */
+.chart-container { position: relative; max-height: 360px; margin: 12px 0; }
+.chart-container-sm { position: relative; max-height: 280px; }
+
+/* Insight box */
+.insight { background: var(--primary-light); border-left: 4px solid var(--primary); border-radius: 0 8px 8px 0; padding: 16px 20px; margin: 16px 0; font-size: 13px; }
+.insight strong { color: var(--primary); }
+.warning-box { background: var(--danger-light); border-left: 4px solid var(--danger); border-radius: 0 8px 8px 0; padding: 16px 20px; margin: 16px 0; font-size: 13px; }
+.warning-box strong { color: var(--danger); }
+.success-box { background: var(--success-light); border-left: 4px solid var(--success); border-radius: 0 8px 8px 0; padding: 16px 20px; margin: 16px 0; font-size: 13px; }
+
+/* Comparison */
+.vs-container { display: grid; grid-template-columns: 1fr auto 1fr; gap: 16px; align-items: start; margin: 20px 0; }
+.vs-box { background: #fff; border-radius: 12px; box-shadow: var(--card-shadow); padding: 20px; }
+.vs-divider { display: flex; align-items: center; font-size: 20px; font-weight: 800; color: var(--gray-300); padding-top: 40px; }
+.vs-box h4 { font-size: 14px; margin-bottom: 12px; }
+.vs-box ul { list-style: none; font-size: 13px; }
+.vs-box ul li { padding: 4px 0; padding-left: 20px; position: relative; }
+.vs-box ul li::before { content: ''; position: absolute; left: 0; top: 10px; width: 8px; height: 8px; border-radius: 50%; }
+.vs-box.pro ul li::before { background: var(--success); }
+.vs-box.con ul li::before { background: var(--danger); }
+
+@media (max-width: 768px) {
+  .card-grid, .card-grid-3, .vs-container { grid-template-columns: 1fr; }
+  .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+  .flow { flex-direction: column; }
+  .vs-container { grid-template-columns: 1fr; }
+  .vs-divider { justify-content: center; padding-top: 0; }
+  .nav-tab { padding: 10px 14px; font-size: 12px; }
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="container">
+    <h1>カフェ勉強の実態調査 × スタディGO戦略分析</h1>
+    <div class="subtitle">カフェで勉強する人の動機・属性・場所選択と、スタディGOのターゲット戦略の相関分析レポート</div>
+    <div class="meta">調査日: 2026年4月8日 ｜ 社内共有用 ｜ Confidential</div>
+  </div>
+</div>
+
+<div class="nav-tabs">
+  <div class="container">
+    <div class="nav-tab active" data-tab="overview">概要</div>
+    <div class="nav-tab" data-tab="motivation">動機分析</div>
+    <div class="nav-tab" data-tab="places">勉強場所マップ</div>
+    <div class="nav-tab" data-tab="personas">ペルソナ</div>
+    <div class="nav-tab" data-tab="migration">移行パターン</div>
+    <div class="nav-tab" data-tab="proposal">提案精査</div>
+    <div class="nav-tab" data-tab="recommendation">推奨アクション</div>
+  </div>
+</div>
+
+<!-- ===== TAB: 概要 ===== -->
+<div class="section active" id="overview">
+  <div class="container">
+    <h2 class="section-title">エグゼクティブサマリー</h2>
+    <p class="section-desc">カフェ勉強の市場動向と、スタディGOの戦略的ポジショニングに関する調査結果の概要</p>
+
+    <div class="kpi-grid">
+      <div class="kpi"><div class="value">11-13%</div><div class="label">カフェで勉強する人の割合</div></div>
+      <div class="kpi warning"><div class="value">58%</div><div class="label">勉強客を迷惑と感じるカフェ利用者</div></div>
+      <div class="kpi success"><div class="value">2���</div><div class="label">都内有料自習室（10年間の成長）</div></div>
+      <div class="kpi"><div class="value">~20万円</div><div class="label">カフェ勉強の年間コスト（毎日利用）</div></div>
+      <div class="kpi success"><div class="value">39店</div><div class="label">勉強カフェの全国店舗数</div></div>
+      <div class="kpi danger"><div class="value">増加中</div><div class="label">カフェの「勉強禁止」張り紙</div></div>
+    </div>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-title">調査から見える最大のインサイト</div>
+        <div class="insight">
+          <strong>カフェ勉強者と自習室利用者は「対立する2群」ではなく、「同一人物の学習フェーズの違い」である。</strong><br>
+          学習の本気度が上がるにつれ、カフェ→勉強カフェ→自習室と移行していくのが実態。スタディGOはこの移行フロー全体をカバーできるプラットフォームとして機能しうる。
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">提案精査の結論</div>
+        <div class="warning-box">
+          <strong>「カフェ無料掲載」は、カフェの「勉強禁止」トレンドと正面衝突するリスクが高い。</strong><br>
+          カフェは情報掲載に留め、チェックイン・学習記録は「勉強が本業の施設」に集中させるべき。
+          代替策として「勉強歓迎カフェ」認定制度（オプトイン方式）を推奨。
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">市場の追い風データ</div>
+      <div class="chart-container">
+        <canvas id="chartMarket"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== TAB: 動機分析 ===== -->
+<div class="section" id="motivation">
+  <div class="container">
+    <h2 class="section-title">カフェで勉強する人の心理的動機</h2>
+    <p class="section-desc">心理学研究・調査データに基づく、カフェ勉強を選択する7つの動機</p>
+
+    <div class="card">
+      <div class="card-title">動機の重要度ランキング</div>
+      <div class="chart-container">
+        <canvas id="chartMotivation"></canvas>
+      </div>
+    </div>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-title">自制心の「外注」</div>
+        <p style="font-size:13px;">最も根本的な動機。カフェに行く人は「意志力が弱い人」ではなく、<strong>「自分の意志力の限界を知っている賢い人」</strong>。</p>
+        <table style="margin-top:12px;">
+          <tr><td style="font-weight:600;">セルフコントロール</td><td>ストレス下で急落（チューリッヒ大2015）</td></tr>
+          <tr><td style="font-weight:600;">スマホ存在効果</td><td>手元にあるだけで認知パフォーマンス低下（ハーバード大2018）</td></tr>
+          <tr><td style="font-weight:600;">コミットメントデバイス</td><td>人は誘惑回避のためにお金を払う（PNAS 2021）</td></tr>
+        </table>
+      </div>
+      <div class="card">
+        <div class="card-title">環境音と脳の関係</div>
+        <div class="chart-container-sm">
+          <canvas id="chartNoise"></canvas>
+        </div>
+        <p style="font-size:12px;color:var(--gray-600);margin-top:8px;">出典: Mehta et al. (2012) イリノイ大学。70dBの適度な騒音が「処理困難性」を引き起こし、抽象的思考を促進。ADHD傾向の人はより多くの外部ノイズを必要とする。</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">社会的促進効果 — 「見られている」ことの力</div>
+      <div class="card-grid" style="margin-top:12px;">
+        <div style="font-size:13px;">
+          <table>
+            <tr><th>効果</th><th>内容</th></tr>
+            <tr><td><strong>社会的促進</strong></td><td>他者の存在で単純作業パフォーマンス向上（Zajonc 1965）</td></tr>
+            <tr><td><strong>評価懸念</strong></td><td>「サボりを見られたくない」恥の回避動機（Cottrell 1968）</td></tr>
+            <tr><td><strong>ホーソン効果</strong></td><td>「注目されている」意識だけで生産性向上</td></tr>
+          </table>
+          <div class="warning-box" style="margin-top:12px;">
+            <strong>注意:</strong> 暗記・反復練習にはカフェが向くが、<strong>未知の難問・複雑な思考にはカフェが逆効果</strong>になりうる（Zajonc理論）。
+          </div>
+        </div>
+        <div>
+          <div class="card-title" style="font-size:14px;">自己決定理論（SDT）との関連</div>
+          <div style="font-size:13px;">
+            <div style="padding:8px 0;border-bottom:1px solid var(--gray-200);">
+              <strong style="color:var(--primary);">自律性</strong> — 勉強場所を自分で選ぶ行為自体が充足
+            </div>
+            <div style="padding:8px 0;border-bottom:1px solid var(--gray-200);">
+              <strong style="color:var(--success);">有能感</strong> — カフェで集中できた成功体験が自己効力感に
+            </div>
+            <div style="padding:8px 0;">
+              <strong style="color:var(--warning);">関係性</strong> — 完全孤立せず微小な社会的接触で充足
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">金銭的動機の二面性</div>
+      <div class="card-grid">
+        <div>
+          <h4 style="font-size:14px;margin-bottom:8px;">カフェ勉強の実コスト</h4>
+          <div class="chart-container-sm">
+            <canvas id="chartCost"></canvas>
+          </div>
+        </div>
+        <div>
+          <h4 style="font-size:14px;margin-bottom:8px;">「自己投資」派 vs 「もったいない」派</h4>
+          <table>
+            <tr><th>自己投資派</th><th>もったいない派</th></tr>
+            <tr><td>社会人（キャリアアップ目的）</td><td>中高生（お小遣い限定）</td></tr>
+            <tr><td>明確なリターンを想定</td><td>図書館で十分という合理的判断</td></tr>
+            <tr><td>環境への投資=生産性向上</td><td>年20万円を参考書に使う方が効率的</td></tr>
+            <tr><td>カフェ代を経費計上（フリーランス）</td><td>長期的費用対効果を重視</td></tr>
+          </table>
+          <div class="insight" style="margin-top:12px;">
+            <strong>サンクコスト効果の逆利用:</strong> 「お金を払ったから元を取ろう」→ 月額制だとさらに「通わなきゃ」効果が強まる（Zhang et al. 2024, JMR）
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== TAB: 勉強場所マップ ===== -->
+<div class="section" id="places">
+  <div class="container">
+    <h2 class="section-title">勉強場所の全体マップ</h2>
+    <p class="section-desc">カフェのタイプ別詳細分析と、全勉強場所の比較</p>
+
+    <div class="card">
+      <div class="card-title">カフェ7分類 — 総合比較マトリクス</div>
+      <div style="overflow-x:auto;">
+        <table>
+          <thead>
+            <tr><th>タイプ</th><th>価格帯</th><th>コスト</th><th>静かさ</th><th>電源</th><th>長居</th><th>空席</th><th>勉強向き</th><th>主な利用者</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>マクドナルド</strong></td><td>100-300円</td>
+              <td><span class="rating"><span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span></span></td>
+              <td><span class="rating"><span class="dot filled-danger"></span><span class="dot"></span><span class="dot"></span></span></td>
+              <td><span class="rating"><span class="dot filled-warn"></span><span class="dot"></span><span class="dot"></span></span></td>
+              <td><span class="rating"><span class="dot filled-danger"></span><span class="dot"></span><span class="dot"></span></span></td>
+              <td><span class="rating"><span class="dot filled"></span><span class="dot filled"></span><span class="dot"></span></span></td>
+              <td><span class="rating"><span class="dot filled-warn"></span><span class="dot"></span><span class="dot"></span></span></td>
+              <td>中高生</td>
+            </tr>
+            <tr>
+              <td><strong>ドトール/ベローチェ</strong></td><td>200-250円</td>
+              <td><span class="rating"><span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span></span></td>
+              <td><span class="rating"><span class="dot filled"></span><span class="dot filled"></span><span class="dot"></span></span></td>
+              <td><span class="rating"><span class="dot filled-warn"></span><span class="dot"></span><span class="dot"></span></span></td>
+              <td><span class="rating"><span class="dot filled"></span><span class="dot filled"></span><span class="dot"></span></span></td>
+              <td><span class="rating"><span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span></span></td>
+              <td><span class="rating"><span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span></span></td>
+              <td>社会人（コスパ重視）</td>
+            </tr>
+            <tr>
+              <td><strong>スタバ/タリーズ</strong></td><td>290-400円</td>
+              <td><span class="rating"><span class="dot filled"></span><span class="dot filled"></span><span class="dot"></span></span></td>
+              <td><span class="rating"><span class="dot filled"></span><span class="dot filled"></span><span class="dot"></span></span></td>
+              <td><span class="rating"><span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span></span></td>
+              <td><span class="rating"><span class="dot filled"></span><span class="dot filled"></span><span class="dot"></span></span></td>
+              <td><span class="rating"><span class="dot filled-danger"></span><span class="dot"></span><span class="dot"></span></span></td>
+              <td><span class="rating"><span class="dot filled"></span><span class="dot filled"></span><span class="dot"></span></span></td>
+              <td>学生〜社会人（最大ボリューム）</td>
+            </tr>
+            <tr>
+              <td><strong>コメダ/星乃</strong></td><td>400-600円</td>
+              <td><span class="rating"><span class="dot filled-warn"></span><span class="dot"></span><span class="dot"></span></span></td>
+              <td><span class="rating"><span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span></span></td>
+              <td><span class="rating"><span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span></span></td>
+              <td><span class="rating"><span class="dot filled"></span><span class="dot filled"></span><span class="dot"></span></span></td>
+              <td><span class="rating"><span class="dot filled-danger"></span><span class="dot"></span><span class="dot"></span></span></td>
+              <td><span class="rating"><span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span></span></td>
+              <td>社会人（30代以上）</td>
+            </tr>
+            <tr>
+              <td><strong>ルノアール</strong></td><td>600-1000円+</td>
+              <td><span class="rating"><span class="dot filled-danger"></span><span class="dot"></span><span class="dot"></span></span></td>
+              <td><span class="rating"><span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span></span></td>
+              <td><span class="rating"><span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span></span></td>
+              <td><span class="rating"><span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span></span></td>
+              <td><span class="rating"><span class="dot filled"></span><span class="dot filled"></span><span class="dot"></span></span></td>
+              <td><span class="rating"><span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span></span></td>
+              <td>30-50代ビジネスマン</td>
+            </tr>
+            <tr>
+              <td><strong>個人カフェ</strong></td><td>500-800円</td>
+              <td><span class="rating"><span class="dot filled-danger"></span><span class="dot"></span><span class="dot"></span></span></td>
+              <td><span class="rating"><span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span></span></td>
+              <td><span class="rating"><span class="dot filled-danger"></span><span class="dot"></span><span class="dot"></span></span></td>
+              <td><span class="rating"><span class="dot filled-warn"></span><span class="dot"></span><span class="dot"></span></span></td>
+              <td><span class="rating"><span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span></span></td>
+              <td><span class="rating"><span class="dot filled-warn"></span><span class="dot"></span><span class="dot"></span></span></td>
+              <td>常連志向</td>
+            </tr>
+            <tr>
+              <td><strong>ホテルラウンジ</strong></td><td>1,500円〜</td>
+              <td><span class="rating"><span class="dot filled-danger"></span><span class="dot"></span><span class="dot"></span></span></td>
+              <td><span class="rating"><span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span></span></td>
+              <td><span class="rating"><span class="dot filled"></span><span class="dot filled"></span><span class="dot"></span></span></td>
+              <td><span class="rating"><span class="dot filled-warn"></span><span class="dot"></span><span class="dot"></span></span></td>
+              <td><span class="rating"><span class="dot filled"></span><span class="dot filled"></span><span class="dot"></span></span></td>
+              <td><span class="rating"><span class="dot filled-warn"></span><span class="dot"></span><span class="dot"></span></span></td>
+              <td>経営者層</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">自習室の多様化 — 5類型</div>
+      <div style="overflow-x:auto;">
+        <table>
+          <thead>
+            <tr><th>タイプ</th><th>音環境</th><th>会話</th><th>コミュニティ</th><th>月額目安</th><th>代表例</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>従来型自習室</strong></td><td>無音</td><td>不可</td><td>なし</td><td>5,000〜20,000円</td><td>自習室プラス</td></tr>
+            <tr style="background:var(--primary-light);"><td><strong>カフェ型自習室</strong></td><td>BGMあり</td><td>ラウンジで可</td><td>軽度</td><td>8,000〜22,000円</td><td>スタディプレイス, STUDY LOUNGE</td></tr>
+            <tr style="background:var(--success-light);"><td><strong>コミュニティ型</strong></td><td>BGMあり</td><td>積極的</td><td>強い</td><td>6,000〜19,000円</td><td>勉強カフェ（39店舗）</td></tr>
+            <tr><td><strong>コワーキング兼用型</strong></td><td>適度な騒音</td><td>自由</td><td>あり</td><td>2,200〜30,000円</td><td>ビズコンフォート</td></tr>
+            <tr><td><strong>ハイブリッド新業態</strong></td><td>ゾーン別</td><td>ゾーン別</td><td>あり</td><td>時間課金〜月額</td><td>TOKI CAFE, 原稿執筆カフェ</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="insight">
+        <strong>重要:</strong> カフェ型自習室・コミュニティ型はカフェの長所を取り込んだ施設。「カフェ派 vs 自習室派」の二項対立はもはや成立しない。
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">属性 × 勉強場所の利用率ヒートマップ</div>
+      <div class="chart-container">
+        <canvas id="chartHeatmap"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== TAB: ペルソナ ===== -->
+<div class="section" id="personas">
+  <div class="container">
+    <h2 class="section-title">6つのペルソナ設計</h2>
+    <p class="section-desc">カフェ勉強者と自習室利用者の相関関係を踏まえた、勉強場所利用者の分類</p>
+
+    <div class="card-grid">
+      <div class="persona-card">
+        <div class="persona-header" style="background:linear-gradient(135deg,#4285f4,#2962ff);">A. カフェ・ライトユーザー</div>
+        <div class="persona-body">
+          <dt>属性</dt><dd>学生〜20代社会人</dd>
+          <dt>頻度</dt><dd>週1-2回、1-2時間</dd>
+          <dt>月額</dt><dd>4,000〜6,000円（消費と認識）</dd>
+          <dt>動機</dt><dd>気分転換、自宅の誘惑排除</dd>
+          <dt>スタディGO移行</dt><dd><span class="badge badge-low">低</span> まだカフェで事足りている</dd>
+        </div>
+      </div>
+      <div class="persona-card">
+        <div class="persona-header" style="background:linear-gradient(135deg,#ea4335,#c62828);">B. カフェ・ヘビーユーザー ★最重要ターゲット</div>
+        <div class="persona-body">
+          <dt>属性</dt><dd>20〜30代社会人（資格勉強中）</dd>
+          <dt>頻度</dt><dd>週3-5回、2時間以上</dd>
+          <dt>月額</dt><dd>12,000〜20,000円（高いと感じ始めている）</dd>
+          <dt>不満</dt><dd>席取り失敗、長居の罪悪感、勉強禁止増加</dd>
+          <dt>スタディGO移行</dt><dd><span class="badge badge-high">高</span> コスト逆転に気づけば即移行</dd>
+        </div>
+      </div>
+      <div class="persona-card">
+        <div class="persona-header" style="background:linear-gradient(135deg,#34a853,#1b5e20);">C. 勉強カフェ利用者</div>
+        <div class="persona-body">
+          <dt>属性</dt><dd>20〜40代会社員（75%が会社員）</dd>
+          <dt>頻度</dt><dd>週2回、3-4時間</dd>
+          <dt>月額</dt><dd>8,000〜19,000円（自己投資と認識）</dd>
+          <dt>動機</dt><dd>集中環境 + コミュニティ + モチベーション維持</dd>
+          <dt>スタディGO移行</dt><dd><span class="badge badge-mid">中</span> 施設検索で利用</dd>
+        </div>
+      </div>
+      <div class="persona-card">
+        <div class="persona-header" style="background:linear-gradient(135deg,#7b1fa2,#4a148c);">D. カフェ型自習室利用者</div>
+        <div class="persona-body">
+          <dt>属性</dt><dd>20〜30代、社会人・大学院生</dd>
+          <dt>頻度</dt><dd>週3-5回、3-5時間</dd>
+          <dt>月額</dt><dd>15,000〜22,000円（環境への投資）</dd>
+          <dt>動機</dt><dd>おしゃれだが集中に振った施設を選ぶ</dd>
+          <dt>スタディGO移行</dt><dd><span class="badge badge-mid">中</span> 施設比較で利用</dd>
+        </div>
+      </div>
+      <div class="persona-card">
+        <div class="persona-header" style="background:linear-gradient(135deg,#455a64,#263238);">E. 従来型自習室利用者</div>
+        <div class="persona-body">
+          <dt>属性</dt><dd>全年代（受験生〜50代）</dd>
+          <dt>頻度</dt><dd>週5日以上、4-8時間</dd>
+          <dt>月額</dt><dd>5,000〜15,000円（コスパ最重視）</dd>
+          <dt>動機</dt><dd>完全な静寂環境での長時間集中</dd>
+          <dt>スタディGO移行</dt><dd><span class="badge badge-low">低</span> すでに利用中の場合が多い</dd>
+        </div>
+      </div>
+      <div class="persona-card">
+        <div class="persona-header" style="background:linear-gradient(135deg,#f57c00,#e65100);">F. ハイブリッド利用者</div>
+        <div class="persona-body">
+          <dt>属性</dt><dd>30〜40代社会人</dd>
+          <dt>パターン</dt><dd>自習室（週5）+ カフェ（週1-2）</dd>
+          <dt>月額</dt><dd>20,000〜30,000円</dd>
+          <dt>動機</dt><dd>集中とリフレッシュの最適バランス</dd>
+          <dt>スタディGO移行</dt><dd><span class="badge badge-mid">中</span> 複数施設の横断検索で利用</dd>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== TAB: 移行パターン ===== -->
+<div class="section" id="migration">
+  <div class="container">
+    <h2 class="section-title">カフェ → 自習室の移行パターン</h2>
+    <p class="section-desc">878名の入会データから見える移行フローと5つのトリガー</p>
+
+    <div class="card">
+      <div class="card-title">利用者の移行フロー</div>
+      <div style="text-align:center;padding:16px 0;">
+        <div class="flow" style="justify-content:center;">
+          <div class="flow-step">自宅で勉強<br><span style="font-size:11px;color:var(--gray-600);">43%が「誘惑」で断念</span></div>
+        </div>
+        <div class="flow-arrow-down">&#9660;</div>
+        <div class="flow" style="justify-content:center;">
+          <div class="flow-step">カフェ (A)<br><span style="font-size:11px;color:var(--gray-600);">ライトユーザー</span></div>
+          <div style="width:40px;"></div>
+          <div class="flow-step">図書館<br><span style="font-size:11px;color:var(--gray-600);">閉館・席不足</span></div>
+        </div>
+        <div class="flow-arrow-down">&#9660; 頻度UP</div>
+        <div class="flow" style="justify-content:center;">
+          <div class="flow-step danger">カフェ (B) ヘビーユーザー<br><span style="font-size:11px;">限界を感じ始める</span></div>
+        </div>
+        <div class="flow-arrow-down">&#9660; コスト逆転・罪悪感</div>
+        <div class="flow" style="justify-content:center;">
+          <div class="flow-step highlight">勉強カフェ (C)<br><span style="font-size:11px;">コミュニティ志向</span></div>
+          <div style="width:40px;"></div>
+          <div class="flow-step highlight">カフェ型自習室 (D)<br><span style="font-size:11px;">雰囲気+集中</span></div>
+        </div>
+        <div class="flow-arrow-down">&#9660; 学習の本格化</div>
+        <div class="flow" style="justify-content:center;">
+          <div class="flow-step" style="border-color:var(--gray-800);background:var(--gray-100);">従来型自習室 (E)<br><span style="font-size:11px;">ストイック集中型</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">移行の5つのトリガー（878名データ）</div>
+      <div class="card-grid-3">
+        <div style="background:var(--danger-light);border-radius:10px;padding:16px;">
+          <div style="font-weight:700;font-size:14px;color:var(--danger);margin-bottom:4px;">1. コスト逆転の認識</div>
+          <div style="font-size:13px;">カフェ代が月6,000円超 →「月1万円で専用スペースが持てる」に気づく</div>
+        </div>
+        <div style="background:var(--danger-light);border-radius:10px;padding:16px;">
+          <div style="font-weight:700;font-size:14px;color:var(--danger);margin-bottom:4px;">2. 罪悪感の蓄積</div>
+          <div style="font-size:13px;">席取り失敗、店員に注意 → 堂々と勉強できる場所を求める</div>
+        </div>
+        <div style="background:var(--warning-light);border-radius:10px;padding:16px;">
+          <div style="font-weight:700;font-size:14px;color:#e37400;margin-bottom:4px;">3. 学習の本格化</div>
+          <div style="font-size:13px;">資格試験に出願、試験まで3ヶ月 → 「本気の環境」が必要</div>
+        </div>
+        <div style="background:var(--warning-light);border-radius:10px;padding:16px;">
+          <div style="font-weight:700;font-size:14px;color:#e37400;margin-bottom:4px;">4. 環境不満の臨界点</div>
+          <div style="font-size:13px;">騒音、WiFi不安定、電源不足の蓄積</div>
+        </div>
+        <div style="background:var(--primary-light);border-radius:10px;padding:16px;">
+          <div style="font-weight:700;font-size:14px;color:var(--primary);margin-bottom:4px;">5. 時間の限界</div>
+          <div style="font-size:13px;">1日2時間では足りない → カフェの暗黙の滞在制限が障壁に</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">スタディGOが狙える「場所×属性」セグメント</div>
+      <div class="chart-container">
+        <canvas id="chartSegment"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== TAB: 提案精査 ===== -->
+<div class="section" id="proposal">
+  <div class="container">
+    <h2 class="section-title">近藤氏 提案の精査結果</h2>
+    <p class="section-desc">AI生成戦略シート3件 + 充足視点コメントの妥当性・リスク評価</p>
+
+    <div class="card">
+      <div class="card-title">施策別の総合評価</div>
+      <div class="assess-row"><div class="assess-label">QRチェックイン（既存加盟店舗）</div><div class="risk-meter"><div class="risk-block active-low"></div><div class="risk-block"></div><div class="risk-block"></div></div><div class="assess-verdict verdict-go">推進すべき</div></div>
+      <div class="assess-row"><div class="assess-label">BPポータル 自習室・コワーキング連携</div><div class="risk-meter"><div class="risk-block active-low"></div><div class="risk-block"></div><div class="risk-block"></div></div><div class="assess-verdict verdict-go">推進すべき</div></div>
+      <div class="assess-row"><div class="assess-label">電源カフェからの送客（記事リンク）</div><div class="risk-meter"><div class="risk-block active-low"></div><div class="risk-block"></div><div class="risk-block"></div></div><div class="assess-verdict verdict-go">推進すべき</div></div>
+      <div class="assess-row"><div class="assess-label">学習ストリーク＆バッジ</div><div class="risk-meter"><div class="risk-block active-low"></div><div class="risk-block"></div><div class="risk-block"></div></div><div class="assess-verdict verdict-go">推進すべき</div></div>
+      <div class="assess-row"><div class="assess-label" style="color:var(--danger);font-weight:700;">カフェの無料掲載（アイドルタイムモデル）</div><div class="risk-meter"><div class="risk-block active-high"></div><div class="risk-block active-high"></div><div class="risk-block active-high"></div></div><div class="assess-verdict verdict-caution">慎重に検討</div></div>
+      <div class="assess-row"><div class="assess-label" style="color:var(--danger);">UGCスポット投稿（カフェ含む）</div><div class="risk-meter"><div class="risk-block active-high"></div><div class="risk-block active-high"></div><div class="risk-block active-high"></div></div><div class="assess-verdict verdict-caution">慎重に検討</div></div>
+      <div class="assess-row"><div class="assess-label">時間制限機能</div><div class="risk-meter"><div class="risk-block active-mid"></div><div class="risk-block active-mid"></div><div class="risk-block"></div></div><div class="assess-verdict verdict-later">フェーズ2で</div></div>
+      <div class="assess-row"><div class="assess-label">HR/EdTechデータ連携</div><div class="risk-meter"><div class="risk-block active-mid"></div><div class="risk-block active-mid"></div><div class="risk-block"></div></div><div class="assess-verdict verdict-later">時期尚早</div></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title" style="color:var(--danger);">「カフェ無料掲載」の3大リスク</div>
+      <div class="card-grid-3">
+        <div class="warning-box">
+          <strong>1. 勉強禁止トレンドとの衝突</strong><br>
+          カフェ利用者の58%が勉強客を迷惑と感じている。カフェの席需要が回復する中、勉強客の送客はカフェ側の問題を悪化させる。
+        </div>
+        <div class="warning-box">
+          <strong>2. ブランドの自己矛盾</strong><br>
+          「カフェだけじゃない」が売りなのに、検索結果がカフェだらけになるリスク。USP崩壊。
+        </div>
+        <div class="warning-box">
+          <strong>3. 無断掲載のハレーション</strong><br>
+          UGCで勉強禁止の店が登録される → ユーザーが行って追い出される → 最悪の体験。法的リスクも。
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">提案の価格設定の乖離</div>
+      <div class="vs-container">
+        <div class="vs-box con">
+          <h4 style="color:var(--danger);">提案のポジショニング</h4>
+          <ul>
+            <li>月額 <strong>1〜3万円</strong></li>
+            <li>「高品質な大人専用空間」</li>
+            <li>HR/EdTech連携による収益化</li>
+          </ul>
+        </div>
+        <div class="vs-divider">VS</div>
+        <div class="vs-box pro">
+          <h4 style="color:var(--success);">実際のスタディGO</h4>
+          <ul>
+            <li>月額 <strong>3,300〜6,600円</strong></li>
+            <li>ドロップイン 220〜770円/時</li>
+            <li>入会金 5,500円（一部店舗）</li>
+          </ul>
+        </div>
+      </div>
+      <div class="warning-box">提案者が現在の価格帯を正確に把握していない可能性がある。戦略検討時は実際の価格帯をベースにすべき。</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== TAB: 推奨アクション ===== -->
+<div class="section" id="recommendation">
+  <div class="container">
+    <h2 class="section-title">推奨アクション</h2>
+    <p class="section-desc">調査結果と提案精査を踏まえた、具体的な推奨施策</p>
+
+    <div class="card">
+      <div class="card-title" style="color:var(--success);">推奨: カフェは「情報掲載」、コア機能は「勉強専用施設」に集中</div>
+      <div class="vs-container">
+        <div class="vs-box pro">
+          <h4>チェックイン・学習記録の対象</h4>
+          <ul>
+            <li>有料自習室</li>
+            <li>コワーキングスペース</li>
+            <li>個室ブース</li>
+            <li>勉強カフェ（勉強が本業）</li>
+            <li>カフェ型自習室</li>
+          </ul>
+        </div>
+        <div class="vs-divider">+</div>
+        <div class="vs-box" style="border-left:3px solid var(--primary);">
+          <h4>カフェ情報の提供（チェックインなし）</h4>
+          <ul style="list-style:disc;padding-left:20px;">
+            <li>電源あり/なし</li>
+            <li>Wi-Fiあり/なし</li>
+            <li>勉強OK/勉強禁止</li>
+            <li>混雑度の傾向</li>
+            <li>電源カフェ記事へのリンク</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">4つの代替案</div>
+      <div class="card-grid">
+        <div style="background:var(--success-light);border-radius:10px;padding:20px;">
+          <div style="font-weight:700;font-size:15px;color:var(--success);margin-bottom:8px;">案1: 情報掲載のみ</div>
+          <div style="font-size:13px;">カフェは電源・WiFi等の情報提供のみ。チェックインは勉強専用施設に限定。ブランドの一貫性維持、ハレーションゼロ。</div>
+          <div style="margin-top:8px;"><span class="badge badge-best">推奨度: 最高</span></div>
+        </div>
+        <div style="background:var(--success-light);border-radius:10px;padding:20px;">
+          <div style="font-weight:700;font-size:15px;color:var(--success);margin-bottom:8px;">案2: 勉強歓迎カフェ認定</div>
+          <div style="font-size:13px;">カフェ側が自ら「勉強歓迎」を申請（オプトイン方式）。無断掲載リスクゼロ。アイドルタイム収益化ニーズとも整合。</div>
+          <div style="margin-top:8px;"><span class="badge badge-best">推奨度: 高</span></div>
+        </div>
+        <div style="background:var(--primary-light);border-radius:10px;padding:20px;">
+          <div style="font-weight:700;font-size:15px;color:var(--primary);margin-bottom:8px;">案3: UGCはレビュー限定</div>
+          <div style="font-size:13px;">スポット登録は運営管理。ユーザーは「この店は勉強しやすかった」のレビューのみ投稿可能。品質管理と同意を担保。</div>
+          <div style="margin-top:8px;"><span class="badge badge-mid">推奨度: 中</span></div>
+        </div>
+        <div style="background:var(--primary-light);border-radius:10px;padding:20px;">
+          <div style="font-weight:700;font-size:15px;color:var(--primary);margin-bottom:8px;">案4: 勉強カフェ特化連携</div>
+          <div style="font-size:13px;">勉強カフェ（39店）、スタディプレイス、STUDY LOUNGE等の「勉強が本業の施設」を優先掲載。ハレーションゼロ。</div>
+          <div style="margin-top:8px;"><span class="badge badge-best">推奨度: 高</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">次のステップ</div>
+      <table>
+        <thead><tr><th>優先度</th><th>アクション</th><th>期間</th></tr></thead>
+        <tbody>
+          <tr><td><span class="badge badge-high">即時</span></td><td>カフェオーナー5-10名へのヒアリング（「勉強客の送客」への反応調査）</td><td>2週間</td></tr>
+          <tr><td><span class="badge badge-high">即時</span></td><td>BPポータルの自習室・コワーキング系店舗リストの精査</td><td>1週間</td></tr>
+          <tr><td><span class="badge badge-mid">短期</span></td><td>「勉強歓迎カフェ」認定制度の設計（申請フロー、バッジデザイン）</td><td>1ヶ月</td></tr>
+          <tr><td><span class="badge badge-mid">短期</span></td><td>勉強カフェ（39店舗）との連携打診</td><td>1ヶ月</td></tr>
+          <tr><td><span class="badge badge-low">中期</span></td><td>UGCレビュー機能の設計（スポット登録は運営管理前提）</td><td>3ヶ月</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="success-box">
+      <strong>結論:</strong> スタディGOの最大の強みは「カフェだけじゃない」というポジショニング。カフェの無料掲載でこれを崩すのではなく、<strong>勉強専用施設の質と量を充実させ、カフェからの移行受け皿としての地位を確立する</strong>ことが、PMF達成への最短ルート。
+    </div>
+  </div>
+</div>
+
+<div style="padding:32px 0;text-align:center;font-size:12px;color:var(--gray-600);border-top:1px solid var(--gray-200);margin-top:48px;">
+  調査日: 2026年4月8日 ｜ 社内共有用 Confidential ｜ Base Point Inc.
+</div>
+
+<script>
+// Tab navigation
+document.querySelectorAll('.nav-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById(tab.dataset.tab).classList.add('active');
+  });
+});
+
+// Chart defaults
+Chart.defaults.font.family = "'Segoe UI','Hiragino Sans','Noto Sans JP',sans-serif";
+Chart.defaults.font.size = 12;
+Chart.defaults.plugins.legend.labels.usePointStyle = true;
+
+// Market growth chart
+new Chart(document.getElementById('chartMarket'), {
+  type: 'bar',
+  data: {
+    labels: ['都内有料自習室\n(2014→2024)', 'リスキリング認知率\n(2022→2024)', '学び直し必要性\nを感じる社会人', 'フレキシブルオフィス\n市場成長(2020→2026)'],
+    datasets: [
+      { label: 'Before / 基準', data: [86, 23, 0, 800], backgroundColor: '#dadce0' },
+      { label: 'After / 現在', data: [172, 56, 58, 2300], backgroundColor: '#1a73e8' }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      title: { display: true, text: '市場の追い風を示す主要指標', font: { size: 14, weight: 'bold' } },
+      tooltip: {
+        callbacks: {
+          label: function(ctx) {
+            const units = ['店舗', '%', '%', '億円'];
+            return ctx.dataset.label + ': ' + ctx.parsed.y + units[ctx.dataIndex];
+          }
+        }
+      }
+    },
+    scales: { y: { beginAtZero: true } }
+  }
+});
+
+// Motivation chart
+new Chart(document.getElementById('chartMotivation'), {
+  type: 'bar',
+  data: {
+    labels: ['自宅の誘惑排除', '適度な雑音で集中', '他人の目による緊張感', '気分転換・場所変更', 'お金を払った分の\n元を取る心理', '時間制限による\n集中効果', '好きな飲み物が\nご褒美'],
+    datasets: [{
+      label: '動機の強さ（調査データに基づく相対評価）',
+      data: [95, 85, 80, 75, 65, 60, 50],
+      backgroundColor: ['#d93025','#ea4335','#f57c00','#f9ab00','#34a853','#1e8e3e','#4285f4'],
+      borderRadius: 6
+    }]
+  },
+  options: {
+    indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, title: { display: true, text: 'カフェ勉強の7大動機', font: { size: 14, weight: 'bold' } } },
+    scales: { x: { display: false, max: 100 } }
+  }
+});
+
+// Noise chart
+new Chart(document.getElementById('chartNoise'), {
+  type: 'line',
+  data: {
+    labels: ['30dB\n(静寂)', '50dB\n(図書館)', '70dB\n(カフェ)', '85dB\n(道路)', '100dB\n(工事)'],
+    datasets: [{
+      label: '創造性パフォーマンス',
+      data: [50, 65, 95, 60, 30],
+      borderColor: '#1a73e8', backgroundColor: 'rgba(26,115,232,.1)',
+      fill: true, tension: .4, pointRadius: 6, pointBackgroundColor: ['#5f6368','#5f6368','#d93025','#5f6368','#5f6368']
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, title: { display: true, text: '騒音レベルと創造性の逆U字カーブ（Mehta 2012）', font: { size: 13 } } },
+    scales: { y: { display: false, max: 110 } }
+  }
+});
+
+// Cost comparison chart
+new Chart(document.getElementById('chartCost'), {
+  type: 'bar',
+  data: {
+    labels: ['カフェ\n(毎日利用)', 'カフェ\n(週2回)', '勉強カフェ\n(レギュラー)', '有料自習室', 'スタディGO\n(月額)'],
+    datasets: [{
+      label: '月額費用（円）',
+      data: [16800, 4000, 11968, 10000, 5000],
+      backgroundColor: ['#d93025','#f9ab00','#34a853','#1a73e8','#7b1fa2'],
+      borderRadius: 6
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, title: { display: true, text: '月額コスト比較', font: { size: 13 } } },
+    scales: { y: { beginAtZero: true, ticks: { callback: v => '¥' + v.toLocaleString() } } }
+  }
+});
+
+// Heatmap (using bar chart as proxy)
+new Chart(document.getElementById('chartHeatmap'), {
+  type: 'bar',
+  data: {
+    labels: ['中学生', '高校生', '大学生', '社会人(資格)', 'フリーランス', '主婦', 'シニア'],
+    datasets: [
+      { label: '自宅', data: [70, 71, 34, 60, 86, 80, 50], backgroundColor: '#e8eaed' },
+      { label: '図書館', data: [14, 71, 25, 10, 2, 8, 20], backgroundColor: '#a8dab5' },
+      { label: '塾/学校', data: [59, 40, 18, 0, 0, 0, 0], backgroundColor: '#93c5fd' },
+      { label: 'カフェ', data: [1, 21, 30, 25, 40, 8, 3], backgroundColor: '#f9ab00' },
+      { label: '有料自習室', data: [0, 2, 5, 20, 5, 0, 0], backgroundColor: '#1a73e8' },
+      { label: 'オンライン', data: [5, 5, 15, 20, 15, 40, 20], backgroundColor: '#7b1fa2' }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { title: { display: true, text: '属性別 勉強場所の利用割合（%・推定値含む）', font: { size: 14, weight: 'bold' } } },
+    scales: { x: { stacked: true }, y: { stacked: true, max: 200, ticks: { callback: v => v + '%' } } }
+  }
+});
+
+// Segment priority chart
+new Chart(document.getElementById('chartSegment'), {
+  type: 'bubble',
+  data: {
+    datasets: [
+      { label: 'カフェ毎日利用の社会人', data: [{ x: 90, y: 85, r: 20 }], backgroundColor: 'rgba(217,48,37,.7)' },
+      { label: '勉強禁止を経験した人', data: [{ x: 80, y: 75, r: 16 }], backgroundColor: 'rgba(234,67,53,.6)' },
+      { label: 'カフェ→自習室の移行期', data: [{ x: 75, y: 80, r: 18 }], backgroundColor: 'rgba(249,171,0,.6)' },
+      { label: '図書館閉館後の学生', data: [{ x: 55, y: 50, r: 14 }], backgroundColor: 'rgba(66,133,244,.5)' },
+      { label: 'オンライン自習室に物足りない人', data: [{ x: 45, y: 45, r: 12 }], backgroundColor: 'rgba(123,31,162,.5)' },
+      { label: 'ルノアール常連の社会人', data: [{ x: 35, y: 60, r: 10 }], backgroundColor: 'rgba(95,99,104,.4)' }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      title: { display: true, text: 'ターゲットセグメント優先度マップ（X: 転換可能性、Y: 市場規模）', font: { size: 14, weight: 'bold' } },
+      legend: { position: 'bottom', labels: { font: { size: 11 } } }
+    },
+    scales: {
+      x: { title: { display: true, text: '転換可能性 →' }, min: 20, max: 100 },
+      y: { title: { display: true, text: '市場規模 →' }, min: 20, max: 100 }
+    }
+  }
+});
+</script>
+
+</body>
+</html>
