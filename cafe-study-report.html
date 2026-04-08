@@ -60,6 +60,7 @@ body { font-family: 'Segoe UI', 'Hiragino Sans', 'Noto Sans JP', sans-serif; bac
 .kpi { background: #fff; border-radius: 12px; box-shadow: var(--card-shadow); padding: 20px; text-align: center; }
 .kpi .value { font-size: 32px; font-weight: 800; color: var(--primary); }
 .kpi .label { font-size: 12px; color: var(--gray-600); margin-top: 4px; }
+.kpi .sub-label { font-size: 11px; color: var(--gray-600); margin-top: 6px; line-height: 1.5; border-top: 1px solid var(--gray-200); padding-top: 6px; }
 .kpi.danger .value { color: var(--danger); }
 .kpi.success .value { color: var(--success); }
 .kpi.warning .value { color: var(--warning); }
@@ -136,6 +137,16 @@ tr:hover td { background: var(--gray-50); }
 .warning-box strong { color: var(--danger); }
 .success-box { background: var(--success-light); border-left: 4px solid var(--success); border-radius: 0 8px 8px 0; padding: 16px 20px; margin: 16px 0; font-size: 13px; }
 
+/* Chart reading guide */
+.chart-guide { font-size: 12px; color: var(--gray-600); margin: 8px 0 4px; padding: 10px 14px; background: var(--gray-50); border-radius: 8px; border: 1px dashed var(--gray-300); line-height: 1.6; }
+.chart-guide strong { color: var(--gray-800); }
+.chart-takeaway { font-size: 13px; color: var(--gray-800); margin: 12px 0 0; padding: 12px 16px; background: #fff; border-left: 3px solid var(--primary); border-radius: 0 8px 8px 0; }
+.chart-takeaway strong { color: var(--primary); }
+
+/* Table legend */
+.table-legend { font-size: 12px; color: var(--gray-600); margin: 8px 0 12px; padding: 8px 14px; background: var(--gray-50); border-radius: 8px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.table-legend-item { display: inline-flex; align-items: center; gap: 4px; }
+
 /* Comparison */
 .vs-container { display: grid; grid-template-columns: 1fr auto 1fr; gap: 16px; align-items: start; margin: 20px 0; }
 .vs-box { background: #fff; border-radius: 12px; box-shadow: var(--card-shadow); padding: 20px; }
@@ -183,15 +194,40 @@ tr:hover td { background: var(--gray-50); }
 <div class="section active" id="overview">
   <div class="container">
     <h2 class="section-title">エグゼクティブサマリー</h2>
-    <p class="section-desc">カフェ勉強の市場動向と、スタディGOの戦略的ポジショニングに関する調査結果の概要</p>
+    <p class="section-desc">カフェ勉強の市場動向と、スタディGOの戦略的ポジショニングに関する調査結果の概要です。<br>各数値をクリックして詳細タブに進むと、根拠データや出典を確認できます。</p>
 
+    <p style="font-size:13px;color:var(--gray-800);margin-bottom:16px;font-weight:600;">この6つの数字が示す全体像: 「カフェで勉強したい人は多い」が「カフェ側は歓迎していない」。その結果「専用施設が急成長中」。</p>
     <div class="kpi-grid">
-      <div class="kpi"><div class="value">11-13%</div><div class="label">カフェで勉強する人の割合</div></div>
-      <div class="kpi warning"><div class="value">58%</div><div class="label">勉強客を迷惑と感じるカフェ利用者</div></div>
-      <div class="kpi success"><div class="value">2���</div><div class="label">都内有料自習室（10年間の成長）</div></div>
-      <div class="kpi"><div class="value">~20万円</div><div class="label">カフェ勉強の年間コスト（毎日利用）</div></div>
-      <div class="kpi success"><div class="value">39店</div><div class="label">勉強カフェの全国店舗数</div></div>
-      <div class="kpi danger"><div class="value">増加中</div><div class="label">カフェの「勉強禁止」張り紙</div></div>
+      <div class="kpi">
+        <div class="value">11-13%</div>
+        <div class="label">カフェで勉強する人の割合</div>
+        <div class="sub-label">カフェ利用者の約9人に1人が勉強目的。需要は確実に存在する。</div>
+      </div>
+      <div class="kpi warning">
+        <div class="value">58%</div>
+        <div class="label">勉強客を迷惑と感じるカフェ利用者</div>
+        <div class="sub-label">過半数が否定的。カフェ勉強は社会的に歓迎されていない。</div>
+      </div>
+      <div class="kpi success">
+        <div class="value">2倍</div>
+        <div class="label">都内有料自習室（10年間の成長）</div>
+        <div class="sub-label">86店→172店（2014→2024年）。カフェ代替の専用施設が急成長。</div>
+      </div>
+      <div class="kpi">
+        <div class="value">~20万円</div>
+        <div class="label">カフェ勉強の年間コスト（毎日利用）</div>
+        <div class="sub-label">1回560円×月30日で試算。月額自習室（5千〜1万円）の方が安い。</div>
+      </div>
+      <div class="kpi success">
+        <div class="value">39店</div>
+        <div class="label">勉強カフェの全国店舗数</div>
+        <div class="sub-label">カフェの雰囲気+自習室の機能を融合した新業態が急拡大中。</div>
+      </div>
+      <div class="kpi danger">
+        <div class="value">増加中</div>
+        <div class="label">カフェの「勉強禁止」張り紙</div>
+        <div class="sub-label">コロナ後の客足回復で席回転を重視。勉強客の排除が加速。</div>
+      </div>
     </div>
 
     <div class="card-grid">
@@ -201,6 +237,7 @@ tr:hover td { background: var(--gray-50); }
           <strong>カフェ勉強者と自習室利用者は「対立する2群」ではなく、「同一人物の学習フェーズの違い」である。</strong><br>
           学習の本気度が上がるにつれ、カフェ→勉強カフェ→自習室と移行していくのが実態。スタディGOはこの移行フロー全体をカバーできるプラットフォームとして機能しうる。
         </div>
+        <p style="font-size:12px;color:var(--gray-600);margin-top:8px;">つまり「カフェ勉強者」は将来の自習室ユーザーであり、スタディGOにとっては見込み顧客の入口にあたる。</p>
       </div>
       <div class="card">
         <div class="card-title">提案精査の結論</div>
@@ -209,13 +246,21 @@ tr:hover td { background: var(--gray-50); }
           カフェは情報掲載に留め、チェックイン・学習記録は「勉強が本業の施設」に集中させるべき。
           代替策として「勉強歓迎カフェ」認定制度（オプトイン方式）を推奨。
         </div>
+        <p style="font-size:12px;color:var(--gray-600);margin-top:8px;">詳細は「提案精査」タブで、リスクの具体的内容と代替案を確認できます。</p>
       </div>
     </div>
 
     <div class="card">
       <div class="card-title">市場の追い風データ</div>
+      <div class="chart-guide">
+        <strong>グラフの読み方:</strong> 灰色バー=過去の数値（基準値）、青色バー=現在の数値。各指標がどれだけ伸びているかを比較できます。<br>
+        4つの指標はそれぞれ単位が異なります（店舗数、%、億円）。バーにマウスを当てると正確な数値と単位が表示されます。
+      </div>
       <div class="chart-container">
         <canvas id="chartMarket"></canvas>
+      </div>
+      <div class="chart-takeaway">
+        <strong>読み取れること:</strong> 自習室の店舗数は10年で2倍、リスキリング認知率は2年で2.4倍、フレキシブルオフィス市場は6年で約3倍に成長。「学びのための専用空間」への需要は確実に拡大しており、スタディGOの事業領域は追い風の中にある。
       </div>
     </div>
   </div>
@@ -225,36 +270,53 @@ tr:hover td { background: var(--gray-50); }
 <div class="section" id="motivation">
   <div class="container">
     <h2 class="section-title">カフェで勉強する人の心理的動機</h2>
-    <p class="section-desc">心理学研究・調査データに基づく、カフェ勉強を選択する7つの動機</p>
+    <p class="section-desc">「なぜわざわざカフェで勉強するのか？」を心理学研究・調査データに基づいて分析。<br>この動機を理解することで、スタディGOがどの「心理的ニーズ」に応えるべきかが見えてきます。</p>
 
     <div class="card">
       <div class="card-title">動機の重要度ランキング</div>
+      <div class="chart-guide">
+        <strong>グラフの読み方:</strong> 複数の調査データを統合し、各動機がカフェ勉強の選択にどれだけ影響しているかを100点満点の相対スコアで示しています。<br>バーが長いほど「その動機でカフェを選ぶ人が多い」ことを意味します。
+      </div>
       <div class="chart-container">
         <canvas id="chartMotivation"></canvas>
+      </div>
+      <div class="chart-takeaway">
+        <strong>読み取れること:</strong> 最大の動機は「自宅の誘惑を排除したい」（95点）。つまりカフェ勉強者の本質的ニーズは<strong>「おいしいコーヒー」ではなく「強制的に集中できる環境」</strong>である。この点で自習室やスタディGOは本質的にカフェより優位。
       </div>
     </div>
 
     <div class="card-grid">
       <div class="card">
         <div class="card-title">自制心の「外注」</div>
-        <p style="font-size:13px;">最も根本的な動機。カフェに行く人は「意志力が弱い人」ではなく、<strong>「自分の意志力の限界を知っている賢い人」</strong>。</p>
+        <p style="font-size:13px;margin-bottom:8px;">最も根本的な動機。カフェに行く人は「意志力が弱い人」ではなく、<strong>「自分の意志力の限界を知っている賢い人」</strong>。</p>
+        <p style="font-size:12px;color:var(--gray-600);margin-bottom:8px;">以下は、人間の自制心が環境に大きく左右されることを示す研究結果です。</p>
         <table style="margin-top:12px;">
           <tr><td style="font-weight:600;">セルフコントロール</td><td>ストレス下で急落（チューリッヒ大2015）</td></tr>
           <tr><td style="font-weight:600;">スマホ存在効果</td><td>手元にあるだけで認知パフォーマンス低下（ハーバード大2018）</td></tr>
           <tr><td style="font-weight:600;">コミットメントデバイス</td><td>人は誘惑回避のためにお金を払う（PNAS 2021）</td></tr>
         </table>
+        <div class="chart-takeaway" style="margin-top:12px;">
+          <strong>スタディGOへの示唆:</strong> 月額課金は「コミットメントデバイス」として機能する。「お金を払ったから行かなきゃ」という心理が学習継続を促進する。
+        </div>
       </div>
       <div class="card">
         <div class="card-title">環境音と脳の関係</div>
+        <div class="chart-guide">
+          <strong>グラフの読み方:</strong> 横軸は騒音レベル（dB）、縦軸は創造的思考のパフォーマンス。<br>赤い点（70dB=カフェの騒音レベル）がピークで、静かすぎても騒がしすぎても創造性は落ちることを示しています。
+        </div>
         <div class="chart-container-sm">
           <canvas id="chartNoise"></canvas>
         </div>
-        <p style="font-size:12px;color:var(--gray-600);margin-top:8px;">出典: Mehta et al. (2012) イリノイ大学。70dBの適度な騒音が「処理困難性」を引き起こし、抽象的思考を促進。ADHD傾向の人はより多くの外部ノイズを必要とする。</p>
+        <div class="chart-takeaway">
+          <strong>読み取れること:</strong> カフェの70dBという環境音は、脳に「処理困難性」を与え、抽象的思考を促進する。これがカフェで「なんとなく集中できる」感覚の正体。ただし<strong>完全な静寂が必要な暗記作業には逆効果</strong>になる場合もある。
+        </div>
+        <p style="font-size:12px;color:var(--gray-600);margin-top:8px;">出典: Mehta et al. (2012) イリノイ大学。ADHD傾向の人はより多くの外部ノイズを必要とする傾向がある。</p>
       </div>
     </div>
 
     <div class="card">
       <div class="card-title">社会的促進効果 — 「見られている」ことの力</div>
+      <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">カフェで勉強がはかどる2つ目の理由は「他人の目」。以下の3つの心理学的効果が同時に作用しています。</p>
       <div class="card-grid" style="margin-top:12px;">
         <div style="font-size:13px;">
           <table>
@@ -264,21 +326,25 @@ tr:hover td { background: var(--gray-50); }
             <tr><td><strong>ホーソン効果</strong></td><td>「注目されている」意識だけで生産性向上</td></tr>
           </table>
           <div class="warning-box" style="margin-top:12px;">
-            <strong>注意:</strong> 暗記・反復練習にはカフェが向くが、<strong>未知の難問・複雑な思考にはカフェが逆効果</strong>になりうる（Zajonc理論）。
+            <strong>注意:</strong> 暗記・反復練習にはカフェが向くが、<strong>未知の難問・複雑な思考にはカフェが逆効果</strong>になりうる（Zajonc理論）。これは「カフェが万能ではない」ことを示しており、目的に応じた場所選びの重要性を裏付ける。
           </div>
         </div>
         <div>
           <div class="card-title" style="font-size:14px;">自己決定理論（SDT）との関連</div>
+          <p style="font-size:12px;color:var(--gray-600);margin-bottom:8px;">人間のモチベーションを支える3つの基本欲求（Deci & Ryan）が、カフェ勉強で満たされる構造:</p>
           <div style="font-size:13px;">
             <div style="padding:8px 0;border-bottom:1px solid var(--gray-200);">
-              <strong style="color:var(--primary);">自律性</strong> — 勉強場所を自分で選ぶ行為自体が充足
+              <strong style="color:var(--primary);">自律性</strong> — 勉強場所を自分で選ぶ行為自体が「自分で決めた」充足感につながる
             </div>
             <div style="padding:8px 0;border-bottom:1px solid var(--gray-200);">
-              <strong style="color:var(--success);">有能感</strong> — カフェで集中できた成功体験が自己効力感に
+              <strong style="color:var(--success);">有能感</strong> — カフェで集中できた成功体験が「自分はやれる」という自己効力感に
             </div>
             <div style="padding:8px 0;">
-              <strong style="color:var(--warning);">関係性</strong> — 完全孤立せず微小な社会的接触で充足
+              <strong style="color:var(--warning);">関係性</strong> — 完全孤立せず、周囲に人がいる微小な社会的接触で充足
             </div>
+          </div>
+          <div class="chart-takeaway" style="margin-top:12px;">
+            <strong>スタディGOへの示唆:</strong> 「自分で場所を選べる」体験を重視し、選択肢の多さ自体が価値になる。
           </div>
         </div>
       </div>
@@ -286,24 +352,32 @@ tr:hover td { background: var(--gray-50); }
 
     <div class="card">
       <div class="card-title">金銭的動機の二面性</div>
+      <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">カフェ勉強のコストに対する捉え方は、利用者によって真逆に分かれます。この違いがスタディGOのターゲット選定に直結します。</p>
       <div class="card-grid">
         <div>
-          <h4 style="font-size:14px;margin-bottom:8px;">カフェ勉強の実コスト</h4>
+          <h4 style="font-size:14px;margin-bottom:4px;">カフェ勉強の実コスト</h4>
+          <div class="chart-guide">
+            <strong>グラフの読み方:</strong> 各勉強場所の月額コストを比較。赤=割高、黄=中間、緑・青・紫=専用施設の月額。<br>「カフェ毎日利用」が最も高く、月額制の施設が割安であることが一目でわかります。
+          </div>
           <div class="chart-container-sm">
             <canvas id="chartCost"></canvas>
           </div>
+          <div class="chart-takeaway">
+            <strong>読み取れること:</strong> カフェを毎日使うと月16,800円。スタディGO月額（5,000円）の3倍以上。「カフェの方が安い」は週2回までの話で、週3回以上使うヘビーユーザーには「コスト逆転」が起きている。
+          </div>
         </div>
         <div>
-          <h4 style="font-size:14px;margin-bottom:8px;">「自己投資」派 vs 「もったいない」派</h4>
+          <h4 style="font-size:14px;margin-bottom:4px;">「自己投資」派 vs 「もったいない」派</h4>
+          <p style="font-size:12px;color:var(--gray-600);margin-bottom:8px;">カフェ代への感覚は利用者属性で大きく異なります。</p>
           <table>
-            <tr><th>自己投資派</th><th>もったいない派</th></tr>
+            <tr><th>自己投資派（社会人中心）</th><th>もったいない派（学生中心）</th></tr>
             <tr><td>社会人（キャリアアップ目的）</td><td>中高生（お小遣い限定）</td></tr>
             <tr><td>明確なリターンを想定</td><td>図書館で十分という合理的判断</td></tr>
             <tr><td>環境への投資=生産性向上</td><td>年20万円を参考書に使う方が効率的</td></tr>
             <tr><td>カフェ代を経費計上（フリーランス）</td><td>長期的費用対効果を重視</td></tr>
           </table>
           <div class="insight" style="margin-top:12px;">
-            <strong>サンクコスト効果の逆利用:</strong> 「お金を払ったから元を取ろう」→ 月額制だとさらに「通わなきゃ」効果が強まる（Zhang et al. 2024, JMR）
+            <strong>サンクコスト効果の逆利用:</strong> 「お金を払ったから元を取ろう」→ 月額制だとさらに「通わなきゃ」効果が強まる（Zhang et al. 2024, JMR）。スタディGOの月額課金モデルはこの心理と相性が良い。
           </div>
         </div>
       </div>
@@ -315,10 +389,19 @@ tr:hover td { background: var(--gray-50); }
 <div class="section" id="places">
   <div class="container">
     <h2 class="section-title">勉強場所の全体マップ</h2>
-    <p class="section-desc">カフェのタイプ別詳細分析と、全勉強場所の比較</p>
+    <p class="section-desc">カフェのタイプ別詳細分析と、全勉強場所の比較です。<br>「どんな人が、どこで勉強しているか」を知ることで、スタディGOがカバーすべき施設の優先順位が見えてきます。</p>
 
     <div class="card">
       <div class="card-title">カフェ7分類 — 総合比較マトリクス</div>
+      <p style="font-size:13px;color:var(--gray-600);margin-bottom:8px;">ひとくちに「カフェ」と言っても、価格帯・雰囲気・設備は大きく異なります。以下は勉強場所としての適性を7タイプに分けて評価した表です。</p>
+      <div class="table-legend">
+        <span style="font-weight:600;">ドット評価の見方:</span>
+        <span class="table-legend-item"><span class="rating"><span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span></span> = 優秀</span>
+        <span class="table-legend-item"><span class="rating"><span class="dot filled"></span><span class="dot filled"></span><span class="dot"></span></span> = 普通</span>
+        <span class="table-legend-item"><span class="rating"><span class="dot filled-warn"></span><span class="dot"></span><span class="dot"></span></span> = やや不足</span>
+        <span class="table-legend-item"><span class="rating"><span class="dot filled-danger"></span><span class="dot"></span><span class="dot"></span></span> = 課題あり</span>
+        <span style="margin-left:8px;">| コスト: 青=安い、黄=普通、赤=高い</span>
+      </div>
       <div style="overflow-x:auto;">
         <table>
           <thead>
@@ -398,10 +481,14 @@ tr:hover td { background: var(--gray-50); }
           </tbody>
         </table>
       </div>
+      <div class="chart-takeaway">
+        <strong>読み取れること:</strong> 「安くて勉強向き」なカフェはドトール/ベローチェ系。しかし勉強に最も適した「静かさ・電源・長居OK」を全て満たすのはルノアール以上の価格帯か、コメダ/星乃になる。つまり<strong>カフェで快適に勉強するには月6,000円以上かかる</strong>のが実情であり、自習室と同等コスト。
+      </div>
     </div>
 
     <div class="card">
       <div class="card-title">自習室の多様化 — 5類型</div>
+      <p style="font-size:13px;color:var(--gray-600);margin-bottom:8px;">「自習室=静かな個室」というイメージはもう古い。現在は5つのタイプに分化しており、特にカフェの雰囲気を取り入れた新業態が急成長しています。<br>色付きの行（青・緑）が「カフェ的要素を取り入れた自習室」で、カフェ勉強者の移行先として重要です。</p>
       <div style="overflow-x:auto;">
         <table>
           <thead>
@@ -417,14 +504,23 @@ tr:hover td { background: var(--gray-50); }
         </table>
       </div>
       <div class="insight">
-        <strong>重要:</strong> カフェ型自習室・コミュニティ型はカフェの長所を取り込んだ施設。「カフェ派 vs 自習室派」の二項対立はもはや成立しない。
+        <strong>重要:</strong> カフェ型自習室・コミュニティ型はカフェの長所（BGM、おしゃれさ、適度な人の気配）を取り込んだ施設。「カフェ派 vs 自習室派」の二項対立はもはや成立せず、その中間にある施設こそが成長市場。スタディGOが掲載すべき最優先カテゴリ。
       </div>
     </div>
 
     <div class="card">
       <div class="card-title">属性 × 勉強場所の利用率ヒートマップ</div>
+      <div class="chart-guide">
+        <strong>グラフの読み方:</strong> 各属性（中学生〜シニア）が、どの勉強場所をどの程度利用しているかを積み上げ棒グラフで表示。<br>
+        色の面積が大きいほど、その場所がよく使われていることを意味します。<br>
+        <strong>黄色（カフェ）と青（有料自習室）の面積に注目</strong> — これがスタディGOのターゲット層です。<br>
+        ※ 公的調査データと各社公表データを統合した推定値を含みます。
+      </div>
       <div class="chart-container">
         <canvas id="chartHeatmap"></canvas>
+      </div>
+      <div class="chart-takeaway">
+        <strong>読み取れること:</strong> カフェ利用率が最も高いのは<strong>フリーランス（40%）</strong>と<strong>大学生（30%）</strong>。一方、有料自習室の利用率が最も高いのは<strong>社会人・資格勉強者（20%）</strong>。「大学生〜社会人」のカフェ利用者が、スタディGOにとって最も獲得しやすい層。
       </div>
     </div>
   </div>
@@ -434,7 +530,7 @@ tr:hover td { background: var(--gray-50); }
 <div class="section" id="personas">
   <div class="container">
     <h2 class="section-title">6つのペルソナ設計</h2>
-    <p class="section-desc">カフェ勉強者と自習室利用者の相関関係を踏まえた、勉強場所利用者の分類</p>
+    <p class="section-desc">カフェ勉強者と自習室利用者を「対立する2群」ではなく、<strong>利用場所・頻度・本気度の連続スペクトラム上の6タイプ</strong>として分類しました。<br>各カードの右下にある <span class="badge badge-high">高</span><span class="badge badge-mid">中</span><span class="badge badge-low">低</span> バッジは、スタディGOへの移行可能性を示します。</p>
 
     <div class="card-grid">
       <div class="persona-card">
@@ -444,7 +540,7 @@ tr:hover td { background: var(--gray-50); }
           <dt>頻度</dt><dd>週1-2回、1-2時間</dd>
           <dt>月額</dt><dd>4,000〜6,000円（消費と認識）</dd>
           <dt>動機</dt><dd>気分転換、自宅の誘惑排除</dd>
-          <dt>スタディGO移行</dt><dd><span class="badge badge-low">低</span> まだカフェで事足りている</dd>
+          <dt>スタディGO移行</dt><dd><span class="badge badge-low">低</span> まだカフェで事足りている段階。しかし学習が本格化すればB→C/Dへ移行する見込み顧客。</dd>
         </div>
       </div>
       <div class="persona-card">
@@ -454,7 +550,7 @@ tr:hover td { background: var(--gray-50); }
           <dt>頻度</dt><dd>週3-5回、2時間以上</dd>
           <dt>月額</dt><dd>12,000〜20,000円（高いと感じ始めている）</dd>
           <dt>不満</dt><dd>席取り失敗、長居の罪悪感、勉強禁止増加</dd>
-          <dt>スタディGO移行</dt><dd><span class="badge badge-high">高</span> コスト逆転に気づけば即移行</dd>
+          <dt>スタディGO移行</dt><dd><span class="badge badge-high">高</span> カフェ代＞月額自習室に気づけば即移行。「コスト逆転」の認知がトリガー。スタディGOの最優先獲得ターゲット。</dd>
         </div>
       </div>
       <div class="persona-card">
@@ -464,7 +560,7 @@ tr:hover td { background: var(--gray-50); }
           <dt>頻度</dt><dd>週2回、3-4時間</dd>
           <dt>月額</dt><dd>8,000〜19,000円（自己投資と認識）</dd>
           <dt>動機</dt><dd>集中環境 + コミュニティ + モチベーション維持</dd>
-          <dt>スタディGO移行</dt><dd><span class="badge badge-mid">中</span> 施設検索で利用</dd>
+          <dt>スタディGO移行</dt><dd><span class="badge badge-mid">中</span> すでに専用施設を使っている。スタディGOでは施設検索・比較で利用。掲載施設の充実が鍵。</dd>
         </div>
       </div>
       <div class="persona-card">
@@ -474,7 +570,7 @@ tr:hover td { background: var(--gray-50); }
           <dt>頻度</dt><dd>週3-5回、3-5時間</dd>
           <dt>月額</dt><dd>15,000〜22,000円（環境への投資）</dd>
           <dt>動機</dt><dd>おしゃれだが集中に振った施設を選ぶ</dd>
-          <dt>スタディGO移行</dt><dd><span class="badge badge-mid">中</span> 施設比較で利用</dd>
+          <dt>スタディGO移行</dt><dd><span class="badge badge-mid">中</span> 施設の横断比較・新規開拓でスタディGOを利用する動機あり。</dd>
         </div>
       </div>
       <div class="persona-card">
@@ -484,7 +580,7 @@ tr:hover td { background: var(--gray-50); }
           <dt>頻度</dt><dd>週5日以上、4-8時間</dd>
           <dt>月額</dt><dd>5,000〜15,000円（コスパ最重視）</dd>
           <dt>動機</dt><dd>完全な静寂環境での長時間集中</dd>
-          <dt>スタディGO移行</dt><dd><span class="badge badge-low">低</span> すでに利用中の場合が多い</dd>
+          <dt>スタディGO移行</dt><dd><span class="badge badge-low">低</span> すでに自習室を利用中。新規獲得よりも、掲載施設として連携する対象。</dd>
         </div>
       </div>
       <div class="persona-card">
@@ -494,9 +590,13 @@ tr:hover td { background: var(--gray-50); }
           <dt>パターン</dt><dd>自習室（週5）+ カフェ（週1-2）</dd>
           <dt>月額</dt><dd>20,000〜30,000円</dd>
           <dt>動機</dt><dd>集中とリフレッシュの最適バランス</dd>
-          <dt>スタディGO移行</dt><dd><span class="badge badge-mid">中</span> 複数施設の横断検索で利用</dd>
+          <dt>スタディGO移行</dt><dd><span class="badge badge-mid">中</span> 複数施設を横断利用。スタディGOの「場所を選べる」価値と相性が良い。</dd>
         </div>
       </div>
+    </div>
+
+    <div class="chart-takeaway" style="margin-top:20px;">
+      <strong>6ペルソナの全体像:</strong> A（ライト）→ B（ヘビー）→ C/D（専用施設）→ E（ストイック） という移行フローの中で、<strong>B（カフェ・ヘビーユーザー）が最も「痛み」を感じている層</strong>であり、スタディGOへの移行動機が最も強い。次のタブ「移行パターン」で、この移行がどのように起きるかを詳しく見ます。
     </div>
   </div>
 </div>
@@ -505,10 +605,11 @@ tr:hover td { background: var(--gray-50); }
 <div class="section" id="migration">
   <div class="container">
     <h2 class="section-title">カフェ → 自習室の移行パターン</h2>
-    <p class="section-desc">878名の入会データから見える移行フローと5つのトリガー</p>
+    <p class="section-desc">勉強カフェチェーンの入会データ（878名）から見える、カフェ勉強者が専用施設へ移行するフローとトリガーです。<br>スタディGOは「このフローのどこに介入すべきか」を考えるための材料になります。</p>
 
     <div class="card">
       <div class="card-title">利用者の移行フロー</div>
+      <p style="font-size:12px;color:var(--gray-600);margin-bottom:8px;">上から下へ読んでください。学習の本気度が上がるにつれ、より専門的な施設へ移行していきます。<br>赤枠=痛みを感じている段階（スタディGOの介入ポイント）、青枠=スタディGOの掲載施設候補です。</p>
       <div style="text-align:center;padding:16px 0;">
         <div class="flow" style="justify-content:center;">
           <div class="flow-step">自宅で勉強<br><span style="font-size:11px;color:var(--gray-600);">43%が「誘惑」で断念</span></div>
@@ -534,38 +635,55 @@ tr:hover td { background: var(--gray-50); }
           <div class="flow-step" style="border-color:var(--gray-800);background:var(--gray-100);">従来型自習室 (E)<br><span style="font-size:11px;">ストイック集中型</span></div>
         </div>
       </div>
+      <div class="chart-takeaway">
+        <strong>スタディGOの介入ポイント:</strong> 赤枠（B: カフェヘビーユーザー）の段階で「コスト逆転」「勉強禁止」などの痛みを感じた人に、青枠（C/D: 勉強カフェ・カフェ型自習室）への移行先として、スタディGOが「場所探し」を支援する。
+      </div>
     </div>
 
     <div class="card">
       <div class="card-title">移行の5つのトリガー（878名データ）</div>
+      <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">以下は、カフェ勉強者が専用施設へ移行する「きっかけ」を5つに分類したものです。<br>赤=即時性が高い（すぐ行動に移る）、黄=中期的、青=徐々に蓄積する動機です。</p>
       <div class="card-grid-3">
         <div style="background:var(--danger-light);border-radius:10px;padding:16px;">
           <div style="font-weight:700;font-size:14px;color:var(--danger);margin-bottom:4px;">1. コスト逆転の認識</div>
-          <div style="font-size:13px;">カフェ代が月6,000円超 →「月1万円で専用スペースが持てる」に気づく</div>
+          <div style="font-size:13px;">カフェ代が月6,000円超 →「月1万円で専用スペースが持てる」に気づく。<strong>最も強力なトリガー。</strong></div>
         </div>
         <div style="background:var(--danger-light);border-radius:10px;padding:16px;">
           <div style="font-weight:700;font-size:14px;color:var(--danger);margin-bottom:4px;">2. 罪悪感の蓄積</div>
-          <div style="font-size:13px;">席取り失敗、店員に注意 → 堂々と勉強できる場所を求める</div>
+          <div style="font-size:13px;">席取り失敗、店員に注意 → 堂々と勉強できる場所を求める。「勉強禁止」の張り紙がダメ押しに。</div>
         </div>
         <div style="background:var(--warning-light);border-radius:10px;padding:16px;">
           <div style="font-weight:700;font-size:14px;color:#e37400;margin-bottom:4px;">3. 学習の本格化</div>
-          <div style="font-size:13px;">資格試験に出願、試験まで3ヶ月 → 「本気の環境」が必要</div>
+          <div style="font-size:13px;">資格試験に出願、試験まで3ヶ月 → 「本気の環境」が必要。目標が明確になると環境への要求が上がる。</div>
         </div>
         <div style="background:var(--warning-light);border-radius:10px;padding:16px;">
           <div style="font-weight:700;font-size:14px;color:#e37400;margin-bottom:4px;">4. 環境不満の臨界点</div>
-          <div style="font-size:13px;">騒音、WiFi不安定、電源不足の蓄積</div>
+          <div style="font-size:13px;">騒音、WiFi不安定、電源不足が重なって「もう限界」となる瞬間。複数の不満が同時に爆発。</div>
         </div>
         <div style="background:var(--primary-light);border-radius:10px;padding:16px;">
           <div style="font-weight:700;font-size:14px;color:var(--primary);margin-bottom:4px;">5. 時間の限界</div>
-          <div style="font-size:13px;">1日2時間では足りない → カフェの暗黙の滞在制限が障壁に</div>
+          <div style="font-size:13px;">1日2時間では足りない → カフェの暗黙の滞在制限（2時間）が障壁になり、長時間OKの施設を探し始める。</div>
         </div>
+      </div>
+      <div class="chart-takeaway" style="margin-top:16px;">
+        <strong>マーケティングへの示唆:</strong> スタディGOの広告・記事コンテンツでは、これらのトリガー（特に1と2）に言及し、「カフェ代と比較して安い」「堂々と勉強できる」メッセージが最も刺さる。
       </div>
     </div>
 
     <div class="card">
       <div class="card-title">スタディGOが狙える「場所×属性」セグメント</div>
+      <div class="chart-guide">
+        <strong>グラフの読み方:</strong> このバブルチャートは、各ターゲットセグメントの優先度を可視化しています。<br>
+        <strong>横軸（X）= スタディGOへの転換可能性</strong>（右にあるほど移行させやすい）<br>
+        <strong>縦軸（Y）= 市場規模</strong>（上にあるほど対象人数が多い）<br>
+        <strong>バブルの大きさ = 売上ポテンシャル</strong>（大きいほど収益貢献が期待できる）<br>
+        つまり<strong>右上にある大きなバブルが最優先ターゲット</strong>です。
+      </div>
       <div class="chart-container">
         <canvas id="chartSegment"></canvas>
+      </div>
+      <div class="chart-takeaway">
+        <strong>読み取れること:</strong> 最も優先すべきは「カフェ毎日利用の社会人」（右上の赤い大きなバブル）。転換可能性90%、市場規模も大きく、売上ポテンシャルが最も高い。次に「カフェ→自習室の移行期にいる人」「勉強禁止を経験した人」が続く。左下の小さなバブル（ルノアール常連など）は優先度が低い。
       </div>
     </div>
   </div>
@@ -575,10 +693,14 @@ tr:hover td { background: var(--gray-50); }
 <div class="section" id="proposal">
   <div class="container">
     <h2 class="section-title">近藤氏 提案の精査結果</h2>
-    <p class="section-desc">AI生成戦略シート3件 + 充足視点コメントの妥当性・リスク評価</p>
+    <p class="section-desc">近藤氏がAIを活用して作成した戦略シート3件 + 充足視点コメントについて、市場調査データに基づいて妥当性・リスクを評価しました。<br>提案に含まれる施策をひとつずつ検証し、「推進すべき」「慎重に検討」「時期尚早」に分類しています。</p>
 
     <div class="card">
       <div class="card-title">施策別の総合評価</div>
+      <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">各施策のリスクレベルと推奨判定です。<br>
+        リスクメーター: <span style="display:inline-flex;gap:3px;vertical-align:middle;"><span style="display:inline-block;width:16px;height:10px;border-radius:2px;background:var(--success);"></span></span>=低リスク、<span style="display:inline-flex;gap:3px;vertical-align:middle;"><span style="display:inline-block;width:16px;height:10px;border-radius:2px;background:var(--warning);"></span></span>=中リスク、<span style="display:inline-flex;gap:3px;vertical-align:middle;"><span style="display:inline-block;width:16px;height:10px;border-radius:2px;background:var(--danger);"></span></span>=高リスク<br>
+        右端のラベルが最終判定です。
+      </p>
       <div class="assess-row"><div class="assess-label">QRチェックイン（既存加盟店舗）</div><div class="risk-meter"><div class="risk-block active-low"></div><div class="risk-block"></div><div class="risk-block"></div></div><div class="assess-verdict verdict-go">推進すべき</div></div>
       <div class="assess-row"><div class="assess-label">BPポータル 自習室・コワーキング連携</div><div class="risk-meter"><div class="risk-block active-low"></div><div class="risk-block"></div><div class="risk-block"></div></div><div class="assess-verdict verdict-go">推進すべき</div></div>
       <div class="assess-row"><div class="assess-label">電源カフェからの送客（記事リンク）</div><div class="risk-meter"><div class="risk-block active-low"></div><div class="risk-block"></div><div class="risk-block"></div></div><div class="assess-verdict verdict-go">推進すべき</div></div>
@@ -591,24 +713,26 @@ tr:hover td { background: var(--gray-50); }
 
     <div class="card">
       <div class="card-title" style="color:var(--danger);">「カフェ無料掲載」の3大リスク</div>
+      <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">提案の中で最もリスクが高い「カフェ無料掲載」について、具体的に何が問題なのかを3つの観点から解説します。</p>
       <div class="card-grid-3">
         <div class="warning-box">
           <strong>1. 勉強禁止トレンドとの衝突</strong><br>
-          カフェ利用者の58%が勉強客を迷惑と感じている。カフェの席需要が回復する中、勉強客の送客はカフェ側の問題を悪化させる。
+          カフェ利用者の58%が勉強客を迷惑と感じている。カフェの席需要が回復する中、勉強客の送客はカフェ側の問題を悪化させ、クレームや掲載拒否につながるリスクがある。
         </div>
         <div class="warning-box">
           <strong>2. ブランドの自己矛盾</strong><br>
-          「カフェだけじゃない」が売りなのに、検索結果がカフェだらけになるリスク。USP崩壊。
+          スタディGOの売りは「カフェだけじゃない、専用の勉強場所が見つかる」こと。検索結果がカフェだらけになると、このUSP（独自の売り）が崩壊し、「ただのカフェ検索アプリ」と誤認される。
         </div>
         <div class="warning-box">
           <strong>3. 無断掲載のハレーション</strong><br>
-          UGCで勉強禁止の店が登録される → ユーザーが行って追い出される → 最悪の体験。法的リスクも。
+          UGCで勉強禁止の店が登録される → ユーザーが行って追い出される → 最悪の体験。店舗側からも「勝手に掲載された」とクレーム。法的リスクも。
         </div>
       </div>
     </div>
 
     <div class="card">
       <div class="card-title">提案の価格設定の乖離</div>
+      <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">提案書に記載された想定価格と、実際のスタディGOの価格帯を比較したものです。戦略を検討する際は、実際の価格帯をベースにする必要があります。</p>
       <div class="vs-container">
         <div class="vs-box con">
           <h4 style="color:var(--danger);">提案のポジショニング</h4>
@@ -628,7 +752,9 @@ tr:hover td { background: var(--gray-50); }
           </ul>
         </div>
       </div>
-      <div class="warning-box">提案者が現在の価格帯を正確に把握していない可能性がある。戦略検討時は実際の価格帯をベースにすべき。</div>
+      <div class="warning-box">
+        <strong>価格帯に約3〜5倍の乖離あり。</strong> 提案者が現在の価格帯を正確に把握していない可能性がある。「月額1〜3万円」で設計された戦略を「月額3,300〜6,600円」のサービスにそのまま適用することはできず、収益モデルの前提から見直す必要がある。
+      </div>
     </div>
   </div>
 </div>
@@ -637,10 +763,11 @@ tr:hover td { background: var(--gray-50); }
 <div class="section" id="recommendation">
   <div class="container">
     <h2 class="section-title">推奨アクション</h2>
-    <p class="section-desc">調査結果と提案精査を踏まえた、具体的な推奨施策</p>
+    <p class="section-desc">ここまでの調査結果と提案精査を踏まえ、スタディGOが取るべき具体的なアクションを提案します。<br>核心は<strong>「カフェは情報として見せるが、コア機能は勉強専用施設に集中する」</strong>という方針です。</p>
 
     <div class="card">
       <div class="card-title" style="color:var(--success);">推奨: カフェは「情報掲載」、コア機能は「勉強専用施設」に集中</div>
+      <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">左側がスタディGOのコア機能（チェックイン・学習記録）の対象施設、右側はカフェの情報提供のみ（チェックイン機能なし）。この切り分けにより、カフェ側とのトラブルを回避しつつ、ユーザーの「カフェ情報も欲しい」ニーズにも応えます。</p>
       <div class="vs-container">
         <div class="vs-box pro">
           <h4>チェックイン・学習記録の対象</h4>
@@ -668,25 +795,26 @@ tr:hover td { background: var(--gray-50); }
 
     <div class="card">
       <div class="card-title">4つの代替案</div>
+      <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">「カフェ無料掲載」の代わりに、リスクを抑えつつカフェ関連ニーズに応える4つの代替案です。<br>推奨度バッジ: <span class="badge badge-best">最高</span>=すぐ実行可能・リスク最小、<span class="badge badge-mid">中</span>=効果はあるが設計に注意が必要。</p>
       <div class="card-grid">
         <div style="background:var(--success-light);border-radius:10px;padding:20px;">
           <div style="font-weight:700;font-size:15px;color:var(--success);margin-bottom:8px;">案1: 情報掲載のみ</div>
-          <div style="font-size:13px;">カフェは電源・WiFi等の情報提供のみ。チェックインは勉強専用施設に限定。ブランドの一貫性維持、ハレーションゼロ。</div>
+          <div style="font-size:13px;">カフェは電源・WiFi等の情報提供のみ。チェックインは勉強専用施設に限定。ブランドの一貫性維持、ハレーションゼロ。<strong>最も安全で即実行可能な選択肢。</strong></div>
           <div style="margin-top:8px;"><span class="badge badge-best">推奨度: 最高</span></div>
         </div>
         <div style="background:var(--success-light);border-radius:10px;padding:20px;">
           <div style="font-weight:700;font-size:15px;color:var(--success);margin-bottom:8px;">案2: 勉強歓迎カフェ認定</div>
-          <div style="font-size:13px;">カフェ側が自ら「勉強歓迎」を申請（オプトイン方式）。無断掲載リスクゼロ。アイドルタイム収益化ニーズとも整合。</div>
+          <div style="font-size:13px;">カフェ側が自ら「勉強歓迎」を申請（オプトイン方式）。無断掲載リスクゼロ。アイドルタイム収益化ニーズとも整合。<strong>カフェ側にもメリットがある双方向の仕組み。</strong></div>
           <div style="margin-top:8px;"><span class="badge badge-best">推奨度: 高</span></div>
         </div>
         <div style="background:var(--primary-light);border-radius:10px;padding:20px;">
           <div style="font-weight:700;font-size:15px;color:var(--primary);margin-bottom:8px;">案3: UGCはレビュー限定</div>
-          <div style="font-size:13px;">スポット登録は運営管理。ユーザーは「この店は勉強しやすかった」のレビューのみ投稿可能。品質管理と同意を担保。</div>
+          <div style="font-size:13px;">スポット登録は運営管理。ユーザーは「この店は勉強しやすかった」のレビューのみ投稿可能。品質管理と同意を担保しつつ、ユーザー参加型の仕組みを実現。</div>
           <div style="margin-top:8px;"><span class="badge badge-mid">推奨度: 中</span></div>
         </div>
         <div style="background:var(--primary-light);border-radius:10px;padding:20px;">
           <div style="font-weight:700;font-size:15px;color:var(--primary);margin-bottom:8px;">案4: 勉強カフェ特化連携</div>
-          <div style="font-size:13px;">勉強カフェ（39店）、スタディプレイス、STUDY LOUNGE等の「勉強が本業の施設」を優先掲載。ハレーションゼロ。</div>
+          <div style="font-size:13px;">勉強カフェ（39店）、スタディプレイス、STUDY LOUNGE等の「勉強が本業の施設」を優先掲載。ハレーションゼロで、掲載施設の質も担保できる。</div>
           <div style="margin-top:8px;"><span class="badge badge-best">推奨度: 高</span></div>
         </div>
       </div>
@@ -694,14 +822,15 @@ tr:hover td { background: var(--gray-50); }
 
     <div class="card">
       <div class="card-title">次のステップ</div>
+      <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">上記の方針を実行に移すための具体的なアクションプランです。優先度順に並べています。</p>
       <table>
-        <thead><tr><th>優先度</th><th>アクション</th><th>期間</th></tr></thead>
+        <thead><tr><th>優先度</th><th>アクション</th><th>期間</th><th>目的</th></tr></thead>
         <tbody>
-          <tr><td><span class="badge badge-high">即時</span></td><td>カフェオーナー5-10名へのヒアリング（「勉強客の送客」への反応調査）</td><td>2週間</td></tr>
-          <tr><td><span class="badge badge-high">即時</span></td><td>BPポータルの自習室・コワーキング系店舗リストの精査</td><td>1週間</td></tr>
-          <tr><td><span class="badge badge-mid">短期</span></td><td>「勉強歓迎カフェ」認定制度の設計（申請フロー、バッジデザイン）</td><td>1ヶ月</td></tr>
-          <tr><td><span class="badge badge-mid">短期</span></td><td>勉強カフェ（39店舗）との連携打診</td><td>1ヶ月</td></tr>
-          <tr><td><span class="badge badge-low">中期</span></td><td>UGCレビュー機能の設計（スポット登録は運営管理前提）</td><td>3ヶ月</td></tr>
+          <tr><td><span class="badge badge-high">即時</span></td><td>カフェオーナー5-10名へのヒアリング</td><td>2週間</td><td>「勉強客の送客」への反応を事前に確認し、リスクを数値化</td></tr>
+          <tr><td><span class="badge badge-high">即時</span></td><td>BPポータルの自習室・コワーキング系店舗リストの精査</td><td>1週間</td><td>既存アセットから掲載候補を洗い出し、最速で施設数を増やす</td></tr>
+          <tr><td><span class="badge badge-mid">短期</span></td><td>「勉強歓迎カフェ」認定制度の設計</td><td>1ヶ月</td><td>申請フロー・バッジデザイン・条件を策定し、パイロット実施</td></tr>
+          <tr><td><span class="badge badge-mid">短期</span></td><td>勉強カフェ（39店舗）との連携打診</td><td>1ヶ月</td><td>勉強が本業の施設を優先掲載し、サービスの信頼性を向上</td></tr>
+          <tr><td><span class="badge badge-low">中期</span></td><td>UGCレビュー機能の設計</td><td>3ヶ月</td><td>スポット登録は運営管理前提で、ユーザー参加型の仕組みを設計</td></tr>
         </tbody>
       </table>
     </div>
@@ -773,7 +902,7 @@ new Chart(document.getElementById('chartMotivation'), {
   },
   options: {
     indexAxis: 'y', responsive: true, maintainAspectRatio: false,
-    plugins: { legend: { display: false }, title: { display: true, text: 'カフェ勉強の7大動機', font: { size: 14, weight: 'bold' } } },
+    plugins: { legend: { display: false }, title: { display: true, text: 'カフェ勉強の7大動機（100点満点の相対スコア）', font: { size: 14, weight: 'bold' } } },
     scales: { x: { display: false, max: 100 } }
   }
 });
@@ -792,7 +921,7 @@ new Chart(document.getElementById('chartNoise'), {
   },
   options: {
     responsive: true, maintainAspectRatio: false,
-    plugins: { legend: { display: false }, title: { display: true, text: '騒音レベルと創造性の逆U字カーブ（Mehta 2012）', font: { size: 13 } } },
+    plugins: { legend: { display: false }, title: { display: true, text: '騒音レベルと創造性の逆U字カーブ（赤い点=カフェの70dBがピーク）', font: { size: 13 } } },
     scales: { y: { display: false, max: 110 } }
   }
 });
@@ -811,8 +940,8 @@ new Chart(document.getElementById('chartCost'), {
   },
   options: {
     responsive: true, maintainAspectRatio: false,
-    plugins: { legend: { display: false }, title: { display: true, text: '月額コスト比較', font: { size: 13 } } },
-    scales: { y: { beginAtZero: true, ticks: { callback: v => '¥' + v.toLocaleString() } } }
+    plugins: { legend: { display: false }, title: { display: true, text: '月額コスト比較（赤=割高、紫=スタディGO）', font: { size: 13 } } },
+    scales: { y: { beginAtZero: true, ticks: { callback: v => '\u00a5' + v.toLocaleString() } } }
   }
 });
 
@@ -853,11 +982,11 @@ new Chart(document.getElementById('chartSegment'), {
   options: {
     responsive: true, maintainAspectRatio: false,
     plugins: {
-      title: { display: true, text: 'ターゲットセグメント優先度マップ（X: 転換可能性、Y: 市場規模）', font: { size: 14, weight: 'bold' } },
+      title: { display: true, text: 'ターゲットセグメント優先度マップ（右上の大きなバブル=最優先）', font: { size: 14, weight: 'bold' } },
       legend: { position: 'bottom', labels: { font: { size: 11 } } }
     },
     scales: {
-      x: { title: { display: true, text: '転換可能性 →' }, min: 20, max: 100 },
+      x: { title: { display: true, text: 'スタディGOへの転換可能性 →' }, min: 20, max: 100 },
       y: { title: { display: true, text: '市場規模 →' }, min: 20, max: 100 }
     }
   }
