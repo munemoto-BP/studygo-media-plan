@@ -209,6 +209,7 @@
     <div class="tab" onclick="switchTab('new')">新規追加</div>
     <div class="tab" onclick="switchTab('edit')">編集画面（既存ルール）</div>
     <div class="tab" onclick="switchTab('modal-demo')">特定日カスタマイズ</div>
+    <div class="tab" onclick="switchTab('changelog')">変更経緯</div>
   </div>
 
   <!-- ============================================ -->
@@ -1253,6 +1254,171 @@
     </div>
   </div>
 
+  <!-- ============================================ -->
+  <!-- 変更経緯タブ -->
+  <!-- ============================================ -->
+  <div id="tab-changelog" class="tab-content">
+    <div class="page-header">
+      <h1>実装ガイドからの変更点</h1>
+      <div class="breadcrumb">07_カレンダー統合.md（初期実装ガイド） → モックアップでの変更と経緯</div>
+    </div>
+
+    <!-- 1 -->
+    <div class="card">
+      <h2>1. 一覧画面: 店舗選択が前提 → 全店舗を常時一覧表示</h2>
+      <table style="font-size:13px;">
+        <tr><th style="width:140px; background:#fafafa;">実装ガイド</th><td><code>searchParams.shopId</code> で店舗選択後にルール表示</td></tr>
+        <tr><th style="background:#e3f2fd;">モックアップ</th><td>全店舗のルールをデフォルト一覧表示。店舗フィルタなし</td></tr>
+      </table>
+      <div class="note-box" style="margin-top:12px;">
+        <strong>経緯:</strong> 実装ガイドは既存UIの「店舗選択→表示」を踏襲していたが、統合画面では全店舗を一覧で見渡せる方が運用効率が良いと判断。
+      </div>
+    </div>
+
+    <!-- 2 -->
+    <div class="card">
+      <h2>2. 一���画面: 種別バッジ付き行 → 1ルール1行 + 店舗フラグチップ</h2>
+      <table style="font-size:13px;">
+        <tr><th style="width:140px; background:#fafafa;">実装ガイド</th><td>月額ルール/時間利用ルールを種別バッジ（<code>_typeLabel</code>）で別行表示</td></tr>
+        <tr><th style="background:#e3f2fd;">モックアップ</th><td>1ルール=1行。店舗名の下に有効種別をチップ表示（種別カラム不要）</td></tr>
+      </table>
+      <div class="note-box" style="margin-top:12px;">
+        <strong>経緯:</strong> 統合カレンダーの目的は「3種類を1画面で管理すること」。種別ごとに別行にするとむしろ情報が分散する。
+      </div>
+    </div>
+
+    <!-- 3 -->
+    <div class="card">
+      <h2>3. 一覧画面: 直近1週間の営業予定カラム（新規追加）</h2>
+      <table style="font-size:13px;">
+        <tr><th style="width:140px; background:#fafafa;">実装ガイド</th><td>記載なし</td></tr>
+        <tr><th style="background:#e3f2fd;">モックアップ</th><td>適用期間の右に7日分の営業予定を色分け表示</td></tr>
+      </table>
+      <div class="note-box" style="margin-top:12px;">
+        <strong>経緯:</strong> 一覧画面だけでは「どの店舗が今週どう営業しているか」がわからない。編集画面を開かずに営業状況を一目で確認できるようにした。
+      </div>
+    </div>
+
+    <!-- 4 -->
+    <div class="card">
+      <h2>4. 休業日: 単一チェック → 種別ごとに独立</h2>
+      <table style="font-size:13px;">
+        <tr><th style="width:140px; background:#fafafa;">実装ガイド</th><td><code>closed</code> 1つ（月額の休業 = 全種別休業）</td></tr>
+        <tr><th style="background:#e3f2fd;">モックアップ</th><td>月額・時間利用・見学それぞれに独立した休業チェック</td></tr>
+      </table>
+      <div class="note-box" style="margin-top:12px;">
+        <strong>経緯:</strong> 実装ガイドの問題点 #1。「月額は休業だが時間利用は営業」というケースが実運用で発生しうる。月���のclosed一本では対応できない。
+      </div>
+    </div>
+
+    <!-- 5 -->
+    <div class="card">
+      <h2>5. 基本設定テーブル: 4列 → 8列</h2>
+      <table style="font-size:13px;">
+        <tr><th style="width:140px; background:#fafafa;">実装ガイド</th><td>曜日 / 月額時間 / 時間利用時間 / 見学時間 / 休業（1つ）の4列</td></tr>
+        <tr><th style="background:#e3f2fd;">モックアップ</th><td>曜日 / 月額（時間+休業）/ 時間利用（時間+休業）/ 見学（時間+不可+不明）の8列</td></tr>
+      </table>
+      <div class="note-box" style="margin-top:12px;">
+        <strong>経緯:</strong> 休業の独立化（#4）に伴い、各種別に個別の休業/不可チェックが必要に。見学は◎/△/×の3状態があるため「不可」「不明」の2チェック構成。
+      </div>
+    </div>
+
+    <!-- 6 -->
+    <div class="card">
+      <h2>6. 祝日設定行（新規追加）</h2>
+      <table style="font-size:13px;">
+        <tr><th style="width:140px; background:#fafafa;">実装ガイド</th><td>日〜土の7曜日のみ</td></tr>
+        <tr><th style="background:#e3f2fd;">モックアップ</th><td>日〜土 + <strong>祝日</strong>の8行</td></tr>
+      </table>
+      <div class="note-box" style="margin-top:12px;">
+        <strong>経緯:</strong> 実装ガイドでは祝日の扱いが未定義。実運用では祝日は平日と異なる営業時間にすることが多く、独立した設定行が必要。
+      </div>
+    </div>
+
+    <!-- 7 -->
+    <div class="card">
+      <h2>7. 特定日カスタマイズ機能（新規追加）</h2>
+      <table style="font-size:13px;">
+        <tr><th style="width:140px; background:#fafafa;">実装ガイド</th><td>記載なし（<code>ShopBusinessHourException</code> の存在は暗黙）</td></tr>
+        <tr><th style="background:#e3f2fd;">モックアップ</th><td>カレンダー日付クリック → ダイアログで種別ごと変更。他店舗反映・基本設定に戻す（スコープ選択）</td></tr>
+      </table>
+      <div class="note-box" style="margin-top:12px;">
+        <strong>経緯:</strong> 既存DBに <code>ShopBusinessHourException</code> テーブルが存在するが実装ガイドでは言及なし。臨時休業や祝日対応に不可欠なため統合UIに組み込んだ。複数店舗で同じ臨時変更を適用する運用ニーズに応じて他店舗反映も追加。
+      </div>
+    </div>
+
+    <!-- 8 -->
+    <div class="card">
+      <h2>8. 一括設定機能（新規追加）</h2>
+      <table style="font-size:13px;">
+        <tr><th style="width:140px; background:#fafafa;">実装ガイド</th><td>記載なし</td></tr>
+        <tr><th style="background:#e3f2fd;">モックアップ</th><td>曜日間コピー（平日一括/土日祝一括）、種別間コピー（月額→時間利用/見学）、既存店舗からコピー</td></tr>
+      </table>
+      <div class="note-box" style="margin-top:12px;">
+        <strong>経緯:</strong> 種別×曜日の組み合わせで設定項目が大幅に増加（8行×3種別=24設定）。手動入力では運用負荷が高すぎるため、効率的な入力支援を追加。
+      </div>
+    </div>
+
+    <!-- 9 -->
+    <div class="card">
+      <h2>9. 新規追加: パラメータ遷移 → Step形式</h2>
+      <table style="font-size:13px;">
+        <tr><th style="width:140px; background:#fafafa;">実装ガイド</th><td><code>?shopId=...&amp;unified=1</code> で編集画面に遷移するのみ</td></tr>
+        <tr><th style="background:#e3f2fd;">モックアップ</th><td>Step1（店舗・期間）→ Step2（曜日別設定）→ Step3（見学締切）→ 確認サマリー</td></tr>
+      </table>
+      <div class="note-box" style="margin-top:12px;">
+        <strong>経緯:</strong> 実装ガイドでは <code>unified=1</code> パラメータの処理が未定義（問題点 #4）。設定項目が多いため段階的なフローの方がわかりやすく、確認サマリーで保存前に内容を確認できる。
+      </div>
+    </div>
+
+    <!-- 10 -->
+    <div class="card">
+      <h2>10. 実装ガイドで未定義だった項目（6件）</h2>
+      <table style="font-size:13px;">
+        <thead>
+          <tr>
+            <th style="width:30px">#</th>
+            <th style="width:280px">問題</th>
+            <th>モックアップでの対応</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>休業日が月額の <code>closed</code> のみ参照</td>
+            <td>種別ごとに独立した休業設定（変更点 #4）</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>保存ロジック未定義</td>
+            <td>確認サマリーで保存内容を表示（実装時に定義要）</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>データ読み込みロジック未定義</td>
+            <td>既存店舗コピー機能で読み込みフローを提示</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td><code>unified=1</code> パラメータ未定義</td>
+            <td>Step形式の新規追加フローに変更（変更点 #9）</td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td><code>getBusinessHourForDate()</code> 未定義</td>
+            <td>カレンダー表示で曜日ベースの描画ロジックをモック化</td>
+          </tr>
+          <tr>
+            <td>6</td>
+            <td>店舗フラグ（<code>canApplyMonthly</code> 等）の実在未確認</td>
+            <td>DB調査済み。<code>Shop.canReservePreview</code> は実在。モック上でフラグチップとして表示</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
 </div>
 
 <!-- ============================================ -->
@@ -1404,7 +1570,7 @@ function switchTab(tabId) {
   document.getElementById('tab-' + tabId).classList.add('active');
   // Activate corresponding tab button
   const tabs = document.querySelectorAll('.tab');
-  const tabMap = { 'list': 0, 'new': 1, 'edit': 2, 'modal-demo': 3 };
+  const tabMap = { 'list': 0, 'new': 1, 'edit': 2, 'modal-demo': 3, 'changelog': 4 };
   if (tabMap[tabId] !== undefined) tabs[tabMap[tabId]].classList.add('active');
 }
 
