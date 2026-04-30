@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>チェックアウト画面 モックアップ</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Yu Gothic', sans-serif;
+    background: #e8e8e8;
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    padding: 40px 20px;
+    min-height: 100vh;
+    flex-wrap: wrap;
+  }
+
+  .screen-wrapper {
+    text-align: center;
+  }
+  .screen-label {
+    font-size: 16px;
+    font-weight: 700;
+    color: #555;
+    margin-bottom: 12px;
+  }
+
+  .phone-frame {
+    width: 390px;
+    background: #f5f5f5;
+    position: relative;
+    overflow: hidden;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  }
+
+  /* Status bar */
+  .status-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 24px 8px;
+    background: #d4e6d0;
+    font-size: 15px;
+    font-weight: 600;
+  }
+  .status-bar-right {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 13px;
+  }
+
+  /* ===== Screen 1: チェックアウト確認 ===== */
+  .nav-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 16px;
+    background: #d4e6d0;
+    position: relative;
+  }
+  .nav-back {
+    position: absolute;
+    left: 16px;
+    color: #4a9e4a;
+    font-size: 22px;
+    font-weight: 300;
+  }
+  .nav-title {
+    font-size: 17px;
+    font-weight: 600;
+    color: #333;
+  }
+
+  .content-dialog {
+    background: #d4e6d0;
+    min-height: 700px;
+    position: relative;
+  }
+
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 40px;
+  }
+
+  .dialog {
+    background: #fff;
+    border-radius: 16px;
+    width: calc(100% - 40px);
+    max-width: 350px;
+    padding: 24px 24px 28px;
+    position: relative;
+  }
+  .dialog-close {
+    position: absolute;
+    top: 16px;
+    right: 20px;
+    font-size: 20px;
+    color: #666;
+    cursor: pointer;
+    line-height: 1;
+  }
+  .dialog-title {
+    text-align: center;
+    font-size: 17px;
+    font-weight: 600;
+    color: #333;
+    margin-top: 16px;
+    margin-bottom: 24px;
+  }
+  .dialog-warning {
+    font-size: 14px;
+    color: #555;
+    line-height: 1.7;
+    margin-bottom: 12px;
+  }
+  .dialog-warning-new {
+    font-size: 14px;
+    color: #555;
+    line-height: 1.7;
+    margin-bottom: 28px;
+  }
+  .dialog-button {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    background: #5ab55a;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: center;
+  }
+
+  /* ===== Screen 2: チェックアウト完了 ===== */
+  .header-area {
+    background: #d4e6d0;
+    padding: 0 0 30px 0;
+  }
+
+  .content-complete {
+    background: #f5f5f5;
+    padding: 0 0 40px 0;
+  }
+
+  .checkout-complete-label {
+    text-align: center;
+    padding: 36px 0 0;
+    font-size: 20px;
+    font-weight: 700;
+    color: #333;
+  }
+
+  .greeting-section {
+    text-align: center;
+    padding: 8px 20px 24px;
+  }
+  .greeting-text {
+    font-size: 24px;
+    font-weight: 700;
+    color: #333;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .greeting-icon {
+    width: 48px;
+    height: 48px;
+  }
+  .greeting-underline {
+    display: block;
+    margin: 4px auto 0;
+    width: 280px;
+    height: 12px;
+    background: linear-gradient(90deg, #6ab04c, #78c850);
+    border-radius: 6px;
+    opacity: 0.5;
+  }
+
+  .usage-section {
+    padding: 0 20px;
+    margin-bottom: 24px;
+  }
+  .usage-table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #ccc;
+    font-size: 13px;
+  }
+  .usage-table th,
+  .usage-table td {
+    border: 1px solid #ccc;
+    padding: 8px 6px;
+    text-align: center;
+    vertical-align: middle;
+  }
+  .usage-table thead th {
+    background: #f9f9f9;
+    font-weight: 600;
+    color: #333;
+  }
+  .usage-header-date {
+    width: 70px;
+    font-weight: 700;
+    font-size: 14px;
+  }
+  .usage-header-plan {
+    font-weight: 700;
+    font-size: 14px;
+  }
+  .usage-header-amount {
+    width: 80px;
+    font-weight: 700;
+    font-size: 14px;
+  }
+  .usage-sub-header th {
+    font-size: 11px;
+    font-weight: 400;
+    color: #666;
+    padding: 4px 6px;
+    background: #f9f9f9;
+  }
+  .usage-date {
+    font-size: 18px;
+    font-weight: 700;
+  }
+  .usage-plan {
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .usage-amount {
+    font-size: 20px;
+    font-weight: 700;
+    color: #333;
+  }
+  .usage-amount-unit {
+    font-size: 13px;
+    font-weight: 400;
+  }
+  .usage-time {
+    color: #6ab04c;
+    font-size: 13px;
+  }
+
+  .review-heading {
+    padding: 0 20px;
+    margin-bottom: 16px;
+  }
+  .review-heading-text {
+    font-size: 14px;
+    color: #333;
+  }
+  .review-heading-plan {
+    font-size: 22px;
+    font-weight: 700;
+    color: #333;
+  }
+
+  .review-card {
+    margin: 0 20px 16px;
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+
+  .review-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+  }
+  .review-number {
+    width: 28px;
+    height: 28px;
+    border: 2px solid #333;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    margin-right: 10px;
+    flex-shrink: 0;
+  }
+  .review-label {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    min-width: 110px;
+  }
+  .review-stars {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    margin-left: auto;
+  }
+  .review-bar {
+    width: 3px;
+    height: 20px;
+    background: #f0c040;
+    margin-right: 4px;
+    border-radius: 2px;
+  }
+  .star {
+    font-size: 22px;
+    color: #ddd;
+    cursor: pointer;
+  }
+
+  .comment-section {
+    margin: 0 20px 8px;
+  }
+  .comment-label {
+    font-size: 15px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+  }
+  .comment-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+  .comment-textarea {
+    width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 14px;
+    font-family: inherit;
+    resize: none;
+    height: 100px;
+    color: #999;
+    outline: none;
+  }
+  .comment-count {
+    text-align: right;
+    font-size: 12px;
+    color: #999;
+    margin-top: 4px;
+  }
+  .comment-note {
+    text-align: center;
+    font-size: 12px;
+    color: #333;
+    margin: 8px 0 16px;
+  }
+
+  .submit-button {
+    display: block;
+    width: calc(100% - 80px);
+    margin: 0 auto 32px;
+    padding: 14px;
+    background: #ccc;
+    color: #fff;
+    border: none;
+    border-radius: 30px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: center;
+  }
+
+  .home-button {
+    display: block;
+    width: calc(100% - 80px);
+    margin: 0 auto 40px;
+    padding: 16px;
+    background: #5ab55a;
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    font-size: 17px;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: center;
+  }
+
+  /* Flow arrow between screens */
+  .flow-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36px;
+    color: #999;
+    align-self: center;
+  }
+
+  @media (max-width: 900px) {
+    body { flex-direction: column; align-items: center; }
+    .flow-arrow { transform: rotate(90deg); margin: 8px 0; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Screen 1: チェックアウト確認ダイアログ -->
+<div class="screen-wrapper">
+  <div class="screen-label">チェックアウト確認</div>
+  <div class="phone-frame">
+    <div class="status-bar">
+      <span>10:16</span>
+      <div class="status-bar-right"><span>●●● ▶</span></div>
+    </div>
+    <div class="nav-bar">
+      <span class="nav-back">‹</span>
+      <span class="nav-title">店舗コード入力</span>
+    </div>
+    <div class="content-dialog">
+      <div class="overlay">
+        <div class="dialog">
+          <span class="dialog-close">✕</span>
+          <div class="dialog-title">チェックアウトしますか？</div>
+          <div class="dialog-warning">※チェックアウト後にチェックアウトのキャンセルはできません。</div>
+          <div class="dialog-warning-new">※チェックアウト後は鍵操作ができなくなります。店外でのチェックアウトをお願いします。</div>
+          <button class="dialog-button">チェックアウトする</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Arrow -->
+<div class="flow-arrow">→</div>
+
+<!-- Screen 2: チェックアウト完了 -->
+<div class="screen-wrapper">
+  <div class="screen-label">チェックアウト完了</div>
+  <div class="phone-frame">
+    <div class="status-bar">
+      <span>10:16</span>
+      <div class="status-bar-right"><span>●●● ▶</span></div>
+    </div>
+    <div class="header-area"></div>
+    <div class="content-complete">
+      <div class="checkout-complete-label">チェックアウト完了</div>
+      <div class="greeting-section">
+        <div class="greeting-text">
+          おつかれさまでした！
+          <svg class="greeting-icon" viewBox="0 0 48 48" fill="none">
+            <path d="M36 8L14 38" stroke="#5ab55a" stroke-width="3" stroke-linecap="round"/>
+            <path d="M10 30L14 38L22 34" stroke="#5ab55a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M30 6C30 6 34 10 38 10" stroke="#5ab55a" stroke-width="2" stroke-linecap="round"/>
+            <rect x="12" y="36" width="20" height="3" rx="1.5" fill="#5ab55a" opacity="0.3"/>
+          </svg>
+        </div>
+        <span class="greeting-underline"></span>
+      </div>
+      <div class="usage-section">
+        <table class="usage-table">
+          <thead>
+            <tr>
+              <th class="usage-header-date" rowspan="2">利用日</th>
+              <th class="usage-header-plan" colspan="2">利用プラン</th>
+              <th class="usage-header-amount" rowspan="2">利用金額</th>
+            </tr>
+            <tr class="usage-sub-header">
+              <th>チェックイン時刻</th>
+              <th>チェックアウト時刻</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td rowspan="2"><span class="usage-date">4/30</span></td>
+              <td colspan="2"><span class="usage-plan">1時間</span></td>
+              <td rowspan="2"><span class="usage-amount">1210</span><span class="usage-amount-unit">円</span></td>
+            </tr>
+            <tr>
+              <td><span class="usage-time">10:15</span></td>
+              <td><span class="usage-time">10:16</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="review-heading">
+        <span class="review-heading-plan">店舗名</span>
+        <span class="review-heading-text"> のレビューをする</span>
+      </div>
+      <div class="review-card">
+        <div class="review-item">
+          <span class="review-number">1</span>
+          <span class="review-label">勉強できた！</span>
+          <div class="review-stars"><span class="review-bar"></span><span class="star">☆</span><span class="star">☆</span><span class="star">☆</span><span class="star">☆</span><span class="star">☆</span></div>
+        </div>
+        <div class="review-item">
+          <span class="review-number">2</span>
+          <span class="review-label">机・椅子</span>
+          <div class="review-stars"><span class="review-bar"></span><span class="star">☆</span><span class="star">☆</span><span class="star">☆</span><span class="star">☆</span><span class="star">☆</span></div>
+        </div>
+        <div class="review-item">
+          <span class="review-number">3</span>
+          <span class="review-label">雰囲気</span>
+          <div class="review-stars"><span class="review-bar"></span><span class="star">☆</span><span class="star">☆</span><span class="star">☆</span><span class="star">☆</span><span class="star">☆</span></div>
+        </div>
+        <div class="review-item">
+          <span class="review-number">4</span>
+          <span class="review-label">清掃</span>
+          <div class="review-stars"><span class="review-bar"></span><span class="star">☆</span><span class="star">☆</span><span class="star">☆</span><span class="star">☆</span><span class="star">☆</span></div>
+        </div>
+        <div class="review-item">
+          <span class="review-number">5</span>
+          <span class="review-label">サービス・接客</span>
+          <div class="review-stars"><span class="review-bar"></span><span class="star">☆</span><span class="star">☆</span><span class="star">☆</span><span class="star">☆</span><span class="star">☆</span></div>
+        </div>
+      </div>
+      <div class="comment-section">
+        <div class="comment-card">
+          <div class="comment-label">レビューコメント</div>
+          <textarea class="comment-textarea" placeholder="ご利用いただいた感想をお聞かせください"></textarea>
+          <div class="comment-count">0/200</div>
+        </div>
+      </div>
+      <div class="comment-note">＊過去に投稿済みの場合は上書きされます</div>
+      <button class="submit-button">送信</button>
+      <button class="home-button">ホームに戻る</button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
