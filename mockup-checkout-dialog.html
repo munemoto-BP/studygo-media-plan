@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>チェックアウト確認ダイアログ モックアップ</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Yu Gothic', sans-serif;
+    background: #e8e8e8;
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+  }
+
+  .phone-frame {
+    width: 390px;
+    min-height: 844px;
+    background: #f5f5f5;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Status bar */
+  .status-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 24px 8px;
+    background: #d4e6d0;
+    font-size: 15px;
+    font-weight: 600;
+  }
+  .status-bar-right {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 13px;
+  }
+
+  /* Navigation bar */
+  .nav-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 16px;
+    background: #d4e6d0;
+    position: relative;
+  }
+  .nav-back {
+    position: absolute;
+    left: 16px;
+    color: #4a9e4a;
+    font-size: 22px;
+    font-weight: 300;
+  }
+  .nav-title {
+    font-size: 17px;
+    font-weight: 600;
+    color: #333;
+  }
+
+  /* Content area */
+  .content {
+    background: #d4e6d0;
+    min-height: 700px;
+    position: relative;
+  }
+
+  /* Overlay */
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 40px;
+  }
+
+  /* Dialog */
+  .dialog {
+    background: #fff;
+    border-radius: 16px;
+    width: calc(100% - 40px);
+    max-width: 350px;
+    padding: 24px 24px 28px;
+    position: relative;
+  }
+
+  .dialog-close {
+    position: absolute;
+    top: 16px;
+    right: 20px;
+    font-size: 20px;
+    color: #666;
+    cursor: pointer;
+    line-height: 1;
+  }
+
+  .dialog-title {
+    text-align: center;
+    font-size: 17px;
+    font-weight: 600;
+    color: #333;
+    margin-top: 16px;
+    margin-bottom: 24px;
+  }
+
+  .dialog-warning {
+    font-size: 14px;
+    color: #555;
+    line-height: 1.7;
+    margin-bottom: 12px;
+  }
+
+  .dialog-warning-new {
+    font-size: 14px;
+    color: #555;
+    line-height: 1.7;
+    margin-bottom: 28px;
+  }
+
+  .dialog-button {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    background: #5ab55a;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: center;
+  }
+
+  /* Labels */
+  .label-section {
+    margin-top: 40px;
+    padding: 0 20px;
+    text-align: center;
+  }
+  .label-before {
+    background: #eee;
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    color: #888;
+    margin-bottom: 16px;
+  }
+  .label-after {
+    background: #4a9e4a;
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    color: #fff;
+    margin-bottom: 16px;
+  }
+  .arrow {
+    display: block;
+    text-align: center;
+    font-size: 24px;
+    color: #999;
+    margin: 12px 0;
+  }
+</style>
+</head>
+<body>
+
+<div class="phone-frame">
+  <!-- Status Bar -->
+  <div class="status-bar">
+    <span>10:16</span>
+    <div class="status-bar-right">
+      <span>●●● ▶</span>
+    </div>
+  </div>
+
+  <!-- Navigation Bar -->
+  <div class="nav-bar">
+    <span class="nav-back">‹</span>
+    <span class="nav-title">店舗コード入力</span>
+  </div>
+
+  <!-- Content -->
+  <div class="content">
+    <div class="overlay">
+      <div class="dialog">
+        <span class="dialog-close">✕</span>
+        <div class="dialog-title">チェックアウトしますか？</div>
+        <div class="dialog-warning">※チェックアウト後にチェックアウトのキャンセルはできません。</div>
+        <div class="dialog-warning-new">※チェックアウト後は鍵操作ができなくなります。店外でのチェックアウトをお願いします。</div>
+        <button class="dialog-button">チェックアウトする</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
